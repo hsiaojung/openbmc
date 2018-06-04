@@ -36,8 +36,7 @@ SRC_URI += "git://github.com/openbmc/phosphor-hwmon"
 SRC_URI += "file://70-hwmon.rules"
 SRC_URI += "file://70-iio.rules"
 
-SRCREV = "a23babd6952cb21397d6aa408a827047d1de81de"
-
+SRCREV = "09791857fd5322e558ca5238f55ec0f914140b5a"
 S = "${WORKDIR}/git"
 
 do_install_append() {
