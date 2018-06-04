@@ -1,0 +1,220 @@
+diff --git a/drivers/hwmon/pmbus/ir35221.c b/drivers/hwmon/pmbus/ir35221.c
+index 0f9170c..6877c2e 100644
+--- a/drivers/hwmon/pmbus/ir35221.c
++++ b/drivers/hwmon/pmbus/ir35221.c
+@@ -1,13 +1,12 @@
++//refence https://github.com/torvalds/linux/blob/master/drivers/hwmon/pmbus/ir35221.c
+ /*
+- * Hardware monitoring driver for IR35221
+- *
+- * Copyright (C) IBM Corporation 2017.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * as published by the Free Software Foundation; either version
+- * 2 of the License, or (at your option) any later version.
+- */
++*     Aewin 
++*
++*     cyril.chang Modify these from ir35221.c for ir3595 sensor driver device 2018/3/15
++*
++*
++*/
++
+ 
+ #include <linux/err.h>
+ #include <linux/i2c.h>
+@@ -16,53 +15,72 @@
+ #include <linux/module.h>
+ #include "pmbus.h"
+ 
+-#define IR35221_MFR_VIN_PEAK		0xc5
+-#define IR35221_MFR_VOUT_PEAK		0xc6
+-#define IR35221_MFR_IOUT_PEAK		0xc7
+-#define IR35221_MFR_TEMP_PEAK		0xc8
+-#define IR35221_MFR_VIN_VALLEY		0xc9
+-#define IR35221_MFR_VOUT_VALLEY		0xca
+-#define IR35221_MFR_IOUT_VALLEY		0xcb
+-#define IR35221_MFR_TEMP_VALLEY		0xcc
++
++
++#define IR35221_PMBUS_READ_IIN      0x89
++#define IR35221_PMBUS_READ_TMP0     0x88
++#define IR35221_PMBUS_READ_TMP1     0x8D
++#define IR35221_PMBUS_READ_VIN      0x52
++
++#define IR35221_MFRIDH              0xFC
++#define IR35221_MFRIDL              0xFD
++
++#define IR35221_Faults_REG          0x4B
++
++#define IR35221_SEL_REG             0xE3
++#define IR35221_READ_REG            0xC8
++#define IR35221_READ_IIN            0x85
++#define IR35221_READ_TEM            0x8F
++#define IR35221_READ_VIN            0x89
++
++
+ 
+ static int ir35221_read_word_data(struct i2c_client *client, int page, int reg)
+ {
+-	int ret;
++	int ret = 0,oreg = 0,check = 0;
++	
+ 
+ 	switch (reg) {
+-	case PMBUS_VIRT_READ_VIN_MAX:
+-		ret = pmbus_read_word_data(client, page, IR35221_MFR_VIN_PEAK);
+-		break;
+-	case PMBUS_VIRT_READ_VOUT_MAX:
+-		ret = pmbus_read_word_data(client, page, IR35221_MFR_VOUT_PEAK);
+-		break;
+-	case PMBUS_VIRT_READ_IOUT_MAX:
+-		ret = pmbus_read_word_data(client, page, IR35221_MFR_IOUT_PEAK);
+-		break;
+-	case PMBUS_VIRT_READ_TEMP_MAX:
+-		ret = pmbus_read_word_data(client, page, IR35221_MFR_TEMP_PEAK);
+-		break;
+-	case PMBUS_VIRT_READ_VIN_MIN:
+-		ret = pmbus_read_word_data(client, page,
+-					   IR35221_MFR_VIN_VALLEY);
+-		break;
+-	case PMBUS_VIRT_READ_VOUT_MIN:
+-		ret = pmbus_read_word_data(client, page,
+-					   IR35221_MFR_VOUT_VALLEY);
+-		break;
+-	case PMBUS_VIRT_READ_IOUT_MIN:
+-		ret = pmbus_read_word_data(client, page,
+-					   IR35221_MFR_IOUT_VALLEY);
+-		break;
+-	case PMBUS_VIRT_READ_TEMP_MIN:
+-		ret = pmbus_read_word_data(client, page,
+-					   IR35221_MFR_TEMP_VALLEY);
+-		break;
++
++
++	      case IR35221_PMBUS_READ_IIN:
++	      
++            oreg = i2c_smbus_read_byte_data(client, IR35221_SEL_REG);
++            i2c_smbus_write_byte_data(client, IR35221_SEL_REG, IR35221_READ_IIN);
++            check = i2c_smbus_read_byte_data(client, IR35221_SEL_REG);
++            ret = i2c_smbus_read_byte_data(client, IR35221_READ_REG);
++            //printk (KERN_ALERT "iin. oreg=%x, check=%x, ret=%x\n", oreg, check, ret);
++            i2c_smbus_write_byte_data(client,  IR35221_SEL_REG, oreg);
++            ret = ret * 12;
++            break;
++        case IR35221_PMBUS_READ_VIN:
++        
++            oreg = i2c_smbus_read_byte_data(client,  IR35221_SEL_REG);
++            i2c_smbus_write_byte_data(client,  IR35221_SEL_REG, IR35221_READ_VIN);
++            check = i2c_smbus_read_byte_data(client,  IR35221_SEL_REG);
++            ret = i2c_smbus_read_byte_data(client,  IR35221_READ_REG);
++            //printk (KERN_ALERT "vin. oreg=%x, check=%x, ret=%x\n", oreg, check, ret);
++            i2c_smbus_write_byte_data(client,  IR35221_SEL_REG, oreg);
++            ret = ret * 15;
++
++            break;
++        case IR35221_PMBUS_READ_TMP1:
++        case IR35221_PMBUS_READ_TMP0:
++        
++            oreg = i2c_smbus_read_byte_data(client,  IR35221_SEL_REG);
++            i2c_smbus_write_byte_data(client,  IR35221_SEL_REG, IR35221_READ_TEM);
++            check = i2c_smbus_read_byte_data(client,  IR35221_SEL_REG);
++            ret = i2c_smbus_read_byte_data(client,  IR35221_READ_REG);
++            i2c_smbus_write_byte_data(client,  IR35221_SEL_REG, oreg);
++  
++            break;
++
++		
+ 	default:
+-		ret = -ENODATA;
++	    ret = ENODATA;
++		
+ 		break;
+ 	}
+-
+ 	return ret;
+ }
+ 
+@@ -79,37 +97,27 @@ static int ir35221_probe(struct i2c_client *client,
+ 				| I2C_FUNC_SMBUS_READ_BLOCK_DATA))
+ 		return -ENODEV;
+ 
+-	ret = i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
+-	if (ret < 0) {
+-		dev_err(&client->dev, "Failed to set PMBUS_PAGE\n");
+-		return ret;
+-	}
+ 
+-	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_ID, buf);
+-	if (ret < 0) {
++	printk (KERN_ALERT "Sensor IR3595/35221  probe\n" );    	  
++	
++    ret = i2c_smbus_read_word_data(client,  IR35221_MFRIDL);
++    
++    if (ret < 0) {
+ 		dev_err(&client->dev, "Failed to read PMBUS_MFR_ID\n");
+ 		return ret;
+ 	}
+-	if (ret != 2 || strncmp(buf, "RI", strlen("RI"))) {
+-		dev_err(&client->dev, "MFR_ID unrecognised\n");
+-		return -ENODEV;
+-	}
+-
+-	ret = i2c_smbus_read_block_data(client, PMBUS_MFR_MODEL, buf);
+-	if (ret < 0) {
+-		dev_err(&client->dev, "Failed to read PMBUS_MFR_MODEL\n");
++    ret = i2c_smbus_write_byte_data(client,  IR35221_Faults_REG, 0x66);
++    
++    if (ret < 0) {
++		dev_err(&client->dev, "Failed to init  Faults status to clean\n");
+ 		return ret;
+ 	}
+-	if (ret != 2 || !(buf[0] == 0x6c && buf[1] == 0x00)) {
+-		dev_err(&client->dev, "MFR_MODEL unrecognised\n");
+-		return -ENODEV;
+-	}
+-
+ 	info = devm_kzalloc(&client->dev, sizeof(struct pmbus_driver_info),
+ 			    GFP_KERNEL);
+-	if (!info)
++	if (!info) {
++	    dev_err(&client->dev, "Failed to allocate mem\n");
+ 		return -ENOMEM;
+-
++    }
+ 	info->read_word_data = ir35221_read_word_data;
+ 
+ 	info->pages = 2;
+@@ -117,15 +125,16 @@ static int ir35221_probe(struct i2c_client *client,
+ 	info->format[PSC_VOLTAGE_OUT] = linear;
+ 	info->format[PSC_CURRENT_IN] = linear;
+ 	info->format[PSC_CURRENT_OUT] = linear;
+-	info->format[PSC_POWER] = linear;
+ 	info->format[PSC_TEMPERATURE] = linear;
+ 
+ 	info->func[0] = PMBUS_HAVE_VIN
+ 		| PMBUS_HAVE_VOUT | PMBUS_HAVE_IIN
+-		| PMBUS_HAVE_IOUT | PMBUS_HAVE_PIN
+-		| PMBUS_HAVE_POUT | PMBUS_HAVE_TEMP
++		| PMBUS_HAVE_IOUT 
++		| PMBUS_HAVE_TEMP
+ 		| PMBUS_HAVE_STATUS_VOUT | PMBUS_HAVE_STATUS_IOUT
+ 		| PMBUS_HAVE_STATUS_INPUT | PMBUS_HAVE_STATUS_TEMP;
++
++		
+ 	info->func[1] = info->func[0];
+ 
+ 	return pmbus_do_probe(client, id, info);
+@@ -149,6 +158,7 @@ static struct i2c_driver ir35221_driver = {
+ 
+ module_i2c_driver(ir35221_driver);
+ 
+-MODULE_AUTHOR("Samuel Mendoza-Jonas <sam@mendozajonas.com");
+-MODULE_DESCRIPTION("PMBus driver for IR35221");
+-MODULE_LICENSE("GPL");
++
++MODULE_AUTHOR("cyril chang");
++MODULE_DESCRIPTION("PMBus driver for IR3595");
++MODULE_LICENSE("GPL");
+\ No newline at end of file

@@ -456,7 +456,7 @@ index b82ebef..c3c2ada 100644
 +				#size-cells = <0>;
 +				reg = <0x1e786000 0x1000>;
 +				clocks = <&pwm_tacho_fixed_clk>;
-+				status = "disabled";
++
 +			};
  
  		};
