@@ -41,3 +41,93 @@
 #      PrettyName:
 #        IPMIFruProperty: Product Name
 #        IPMIFruSection: Product
+50:
+  /system/chassis/motherboard/fan0:
+    entityID: 29
+    entityInstance: 1
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+51:
+  /system/chassis/motherboard/fan1:
+    entityID: 29
+    entityInstance: 2
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+52:
+  /system/chassis/motherboard/fan2:
+    entityID: 29
+    entityInstance: 3
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+53:
+  /system/chassis/motherboard/fan3:
+    entityID: 29
+    entityInstance: 4
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+54:
+  /system/chassis/motherboard/fan4:
+    entityID: 29
+    entityInstance: 5
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+55:
+  /system/chassis/motherboard/fan5:
+    entityID: 29
+    entityInstance: 6
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+56:
+  /system/chassis/motherboard/fan6:
+    entityID: 29
+    entityInstance: 7
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+57:
+  /system/chassis/motherboard/fan7:
+    entityID: 29
+    entityInstance: 8
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+58:
+  /system/chassis/motherboard/fan8:
+    entityID: 29
+    entityInstance: 9
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product
+59:
+  /system/chassis/motherboard/fan9:
+    entityID: 29
+    entityInstance: 10
+    interfaces:
+      xyz.openbmc_project.Inventory.Item:
+        PrettyName:
+          IPMIFruProperty: Product Name
+          IPMIFruSection: Product

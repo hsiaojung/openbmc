@@ -35,6 +35,9 @@ RDEPENDS_max31785-msl = "${VIRTUAL-RUNTIME_base-utils} i2c-tools"
 SRC_URI += "git://github.com/openbmc/phosphor-hwmon"
 SRC_URI += "file://70-hwmon.rules"
 SRC_URI += "file://70-iio.rules"
+SRC_URI += "file://0001-fit-empty-fan.patch"
+SRC_URI += "file://0002-fix-fans-index.patch"
+
 
 SRCREV = "09791857fd5322e558ca5238f55ec0f914140b5a"
 S = "${WORKDIR}/git"
