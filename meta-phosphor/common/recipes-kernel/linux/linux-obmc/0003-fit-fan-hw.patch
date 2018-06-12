@@ -1,0 +1,74 @@
+diff --git a/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts b/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts
+index 310ebae..2fb14a9 100644
+--- a/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts
++++ b/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts
+@@ -375,50 +375,60 @@
+ 	};
+ 
+ 	fan@1 {
+-		reg = <0x00>;
++		reg = <0x01>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x01>;
+ 	};
+ 
+ 	fan@2 {
+-		reg = <0x01>;
++		reg = <0x02>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x02>;
+ 	};
+ 
+ 	fan@3 {
+-		reg = <0x01>;
++		reg = <0x03>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x03>;
+ 	};
+ 
+ 	fan@4 {
+-		reg = <0x02>;
++		reg = <0x04>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x04>;
+ 	};
+ 
+ 	fan@5 {
+-		reg = <0x02>;
++		reg = <0x05>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x05>;
+ 	};
+ 
+ 	fan@6 {
+-		reg = <0x03>;
++		reg = <0x00>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x06>;
+ 	};
+ 
+ 	fan@7 {
+-		reg = <0x03>;
++		reg = <0x01>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x07>;
+ 	};
+ 
+ 	fan@8 {
+-		reg = <0x04>;
++		reg = <0x02>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x08>;
+ 	};
+ 
+ 
+ 	fan@9 {
+-		reg = <0x04>;
++		reg = <0x03>;
+ 		aspeed,fan-tach-ch = /bits/ 8 <0x09>;
+ 	};
+ 
++	fan@10 {
++		reg = <0x04>;
++		aspeed,fan-tach-ch = /bits/ 8 <0x0A>;
++	};
++
++
++	fan@11 {
++		reg = <0x05>;
++		aspeed,fan-tach-ch = /bits/ 8 <0x0B>;
++	};
+ 
+ };

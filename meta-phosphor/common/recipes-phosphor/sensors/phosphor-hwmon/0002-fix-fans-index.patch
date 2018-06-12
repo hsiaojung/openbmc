@@ -1,0 +1,413 @@
+diff --git a/fan_pwm.cpp b/fan_pwm.cpp
+index 04cb1b5..409dba6 100644
+--- a/fan_pwm.cpp
++++ b/fan_pwm.cpp
+@@ -10,6 +10,12 @@
+ #include <experimental/filesystem>
+ #include <string>
+ 
++#include <iostream>
++#include <string>         // std::string
++using std::cout;
++using std::endl;
++
++
+ using namespace phosphor::logging;
+ 
+ namespace hwmon
+@@ -21,20 +27,47 @@ uint64_t FanPwm::target(uint64_t value)
+     using namespace std::literals;
+ 
+     if (curValue != value)
+-    {
++    { 
++    // cyril add to fan control!!!!!!1
++	std::cout << "cyril FanPwm::target--Write target out to sysfs- start!!" << endl;
++	std::cout << "cyril FanPwm::target Value of devPath is: " << devPath << endl;
++
++	std::cout << "cyril FanPwm::target Value of id is: " << id << endl;	
++    std::cout << "cyril FanPwm::target Value of value is: " << value << endl;	 
++
++	
++	int i_auto = std::stoi (id ,nullptr,0);
++
++	if (i_auto > 6) {
++		
++		i_auto -= 6;
++		std::cout << "cyril FanPwm::target id >6 ,i_auto is:" << i_auto  << endl;
++		
++	} else {
++	
++		std::cout << "cyril FanPwm::target id < 6 ,i_auto is:" << i_auto  << endl;
++	}
++	
++	std::string FanIndex = std::to_string(i_auto);
++	std::cout << "cyril Value of FanIndex is: " << FanIndex << endl;
++	
+         std::string empty;
+         //Write target out to sysfs
+         try {
+             ioAccess.write(
+                 value,
+                 type,
+-                id,
++                //id,  /* cyril remove this for fan control!!!!!!1*/
++                FanIndex,/* cyril add for fan control!!!!!!1*/
+                 empty,
+                 sysfs::hwmonio::retries,
+                 sysfs::hwmonio::delay);
+         }
+         catch (const std::system_error& e)
+         {
++
++			std::cout << "!!!!! cyril FanPwm::target--Write target  FAILEURE!!!!!!!!!" << endl;
++
+             using namespace sdbusplus::xyz::openbmc_project::Control::
+                 Device::Error;
+             report<WriteFailure>(
+@@ -55,7 +88,7 @@ uint64_t FanPwm::target(uint64_t value)
+             exit(EXIT_FAILURE);
+         }
+     }
+-
++			std::cout << "cyril  FanPwm::target--Write target out to sysfs-------2" << endl;
+     return FanPwmObject::target(value);
+ }
+ 
+diff --git a/fan_pwm.hpp b/fan_pwm.hpp
+index 1541779..784eb13 100644
+--- a/fan_pwm.hpp
++++ b/fan_pwm.hpp
+@@ -2,7 +2,10 @@
+ 
+ #include "interface.hpp"
+ #include "sysfs.hpp"
++#include <iostream>
+ 
++using std::cout;
++using std::endl;
+ namespace hwmon
+ {
+ 
+@@ -38,7 +41,12 @@ class FanPwm : public FanPwmObject
+                 ioAccess(instancePath),
+                 devPath(devPath)
+         {
+-            FanPwmObject::target(target);
++       
++			std::cout << "cyril ------------------001 " << endl;
++			std::cout << "cyril Value of instancePath is: " << instancePath << endl;
++			std::cout << "cyril Value of devPath is: " << devPath << endl;
++			std::cout << "cyril Value of id is: " << id << endl;
++            FanPwmObject::target(target); //create dbus!
+         }
+ 
+         /**
+diff --git a/fan_speed.cpp b/fan_speed.cpp
+index 15ce946..047bba7 100644
+--- a/fan_speed.cpp
++++ b/fan_speed.cpp
+@@ -6,6 +6,13 @@
+ #include "hwmon.hpp"
+ #include "sysfs.hpp"
+ 
++
++#include <iostream>
++#include <string>         // std::string
++using std::cout;
++using std::endl;
++
++
+ using namespace phosphor::logging;
+ 
+ namespace hwmon
+@@ -13,6 +20,8 @@ namespace hwmon
+ 
+ uint64_t FanSpeed::target(uint64_t value)
+ {
++
++	std::cout << "cyril --FanSpeed::target....1   -Write target out to sysfs-------" << endl;
+     auto curValue = FanSpeedObject::target();
+ 
+     if (curValue != value)
+@@ -31,6 +40,8 @@ uint64_t FanSpeed::target(uint64_t value)
+         }
+         catch (const std::system_error& e)
+         {
++
++			std::cout << "cyril --FanSpeed::target....!!!!!!!!!!!!!!  -Write target out to sysfs-------" << endl;
+             using namespace sdbusplus::xyz::openbmc_project::Control::
+                 Device::Error;
+             report<WriteFailure>(
+@@ -51,7 +62,7 @@ uint64_t FanSpeed::target(uint64_t value)
+             exit(EXIT_FAILURE);
+         }
+     }
+-
++	std::cout << "cyril --FanSpeed::target...2   -Write target out to sysfs-------" << endl;
+     return FanSpeedObject::target(value);
+ }
+ 
+@@ -62,7 +73,7 @@ void FanSpeed::enable()
+     if (!enable.empty())
+     {
+         auto val = std::stoul(enable);
+-
++		std::cout << "cyril -FanSpeed::enable()..make_sysfs_path -------1" << endl;
+         try
+         {
+             ioAccess.write(
+@@ -82,7 +93,7 @@ void FanSpeed::enable()
+                         WriteFailure::CALLOUT_ERRNO(e.code().value()),
+                     xyz::openbmc_project::Control::Device::
+                         WriteFailure::CALLOUT_DEVICE_PATH(devPath.c_str()));
+-
++			std::cout << "cyril -FanSpeed::enable()..make_sysfs_path -------2" << endl;
+             auto fullPath = sysfs::make_sysfs_path(
+                     ioAccess.path(),
+                     type::pwm,
+diff --git a/targets.hpp b/targets.hpp
+index 02bdd4f..7e74603 100644
+--- a/targets.hpp
++++ b/targets.hpp
+@@ -8,6 +8,11 @@
+ #include "fan_speed.hpp"
+ #include "fan_pwm.hpp"
+ 
++#include <iostream>
++#include <string>         // std::string
++using std::cout;
++using std::endl;
++
+ enum class targetType
+ {
+     DEFAULT,
+@@ -59,7 +64,7 @@ struct Targets<hwmon::FanPwm>
+  *  @return A shared pointer to the target interface object
+  *          Will be empty if no interface was created
+  */
+-template <typename T>
++template <typename T>  // force to define it as template!!!!!
+ std::shared_ptr<T> addTarget(const SensorSet::key_type& sensor,
+                              const sysfs::hwmonio::HwmonIO& ioAccess,
+                              const std::string& devPath,
+@@ -83,34 +88,129 @@ std::shared_ptr<T> addTarget(const SensorSet::key_type& sensor,
+     using namespace std::literals;
+     const std::string pwm = "pwm"s;
+     const std::string empty = ""s;
+-
++	
++	
++	std::cout << "cyril ------------------002 " << endl;
++	std::cout << "cyril Value of devPath is: " << devPath << endl;
++	
+     if (InterfaceType::FAN_PWM == type)
+     {
++		std::cout << "cyril ------------------003 " << endl;
++
+         targetName = pwm;
+         // If PWM_TARGET is set, use the specified pwm id
+         auto id = env::getEnv("PWM_TARGET", sensor);
++		std::cout << "cyril Value of id is: " << id << endl;
+         if (!id.empty())
+         {
++        	std::cout << "cyril ------------------004 " << endl;
+             targetId = id;
+         }
+         entry = empty;
+-    }
++		std::cout << "cyril ------------------005 " << endl;
+ 
++    }
++	
+     sysfsFullPath = sysfs::make_sysfs_path(ioAccess.path(),
+                                            targetName,
+                                            targetId,
+                                            entry);
++
++	
++	std::cout << "cyril ------------------006  start!!" << endl;
++	std::cout << "cyril Value of sysfsFullPath is: " << sysfsFullPath << endl;
++	std::cout << "cyril Value of entry is: " << entry << endl;
++	std::cout << "cyril Value of targetName is: " << targetName << endl;
++	std::cout << "cyril Value of targetId is: " << targetId << endl;
++	std::cout << "cyril Value of pwm is: " << pwm << endl;
++	std::cout << "cyril Value of empty is: " << empty << endl;
++
++	/*
++	auto do_setp = 0;
++	if (fs::exists(sysfsFullPath)) {
++		do_setp = 1;
++		std::cout << "cyril ------------------006.1 end !!!" << endl;
++
++    } else {
++		std::size_t found = sysfsFullPath.find("pwm");
++		if (found!=std::string::npos) {
++			do_setp = 1;
++			std::cout << "cyril ------------------006.2 end !!!" << endl;
++
++		}else {
++			do_setp = 0;
++			std::cout << "cyril ------------------006.3 end !!!" << endl;
++		}		
++    }		
++	if (do_setp == 1)freferferf
++	*/
++
++	std::size_t found;
++	
++	found = sysfsFullPath.find("pwm7");
++
++  	if (found!=std::string::npos) {
++    	sysfsFullPath = "/sys/class/hwmon/hwmon0/pwm1";
++  	}
++	
++	found = sysfsFullPath.find("pwm8");
++	
++  	if (found!=std::string::npos) {
++		
++    	sysfsFullPath = "/sys/class/hwmon/hwmon0/pwm2";
++		
++  	}
++	
++	found = sysfsFullPath.find("pwm9");
++	
++  	if (found!=std::string::npos) {
++		
++    	sysfsFullPath = "/sys/class/hwmon/hwmon0/pwm3";
++		
++  	}
++	
++	found = sysfsFullPath.find("pwm10");
++	
++  	if (found!=std::string::npos) {
++		
++    	sysfsFullPath = "/sys/class/hwmon/hwmon0/pwm4";
++		
++  	}
++	
++	found = sysfsFullPath.find("pwm11");
++	
++  	if (found!=std::string::npos) {
++		
++    	sysfsFullPath = "/sys/class/hwmon/hwmon0/pwm5";
++  	}
++  	
++	found = sysfsFullPath.find("pwm12");
++	
++  	if (found!=std::string::npos) {
++		
++    	sysfsFullPath = "/sys/class/hwmon/hwmon0/pwm6";
++  	}
++	
+     if (fs::exists(sysfsFullPath))
++		
+     {
++
++		std::cout << "cyril ------------------007 " << endl;
++ 
++	
+         auto useTarget = true;
+         auto tmEnv = env::getEnv("TARGET_MODE");
+         if (!tmEnv.empty())
+         {
++        	
+             std::string mode{tmEnv};
+             std::transform(mode.begin(), mode.end(), mode.begin(), toupper);
+ 
+             if (mode == RPM_TARGET)
+             {
++            
++		std::cout << "cyril ------------------009 " << endl;
++ 
+                 if (type != InterfaceType::FAN_SPEED)
+                 {
+                     useTarget = false;
+@@ -118,13 +218,22 @@ std::shared_ptr<T> addTarget(const SensorSet::key_type& sensor,
+             }
+             else if (mode == PWM_TARGET)
+             {
++            	
++		std::cout << "cyril ------------------010" << endl;
++ 
+                 if (type != InterfaceType::FAN_PWM)
+                 {
++                	
++		std::cout << "cyril ------------------011" << endl;
++ 
+                     useTarget = false;
+                 }
+             }
+             else
+             {
++            	
++		std::cout << "cyril ------------------012" << endl;
++ 
+                 using namespace phosphor::logging;
+                 log<level::ERR>("Invalid TARGET_MODE env var found",
+                         phosphor::logging::entry(
+@@ -136,13 +245,33 @@ std::shared_ptr<T> addTarget(const SensorSet::key_type& sensor,
+ 
+         if (useTarget)
+         {
+-            uint32_t targetSpeed = 0;
++        	
++			std::cout << "cyril ------------------013 force set 211" << endl;
++ 
++            uint32_t targetSpeed = 188;
+ 
++			int i_auto = std::stoi (targetId,nullptr,0);
++
++			if (i_auto > 6) {
++				
++				i_auto -= 6;
++				std::cout << "cyril -013.1-------i_auto" << i_auto  << endl;
++				
++			} else {
++			
++				std::cout << "cyril -013.2-------i_auto" << i_auto  << endl;
++			}
++			
++			std::string FanIndex = std::to_string(i_auto);
++			std::cout << "cyril Value of FanIndex is: " << FanIndex << endl;
++			std::cout << "cyril Value of targetId is: " << targetId << endl;
++			
+             try
+             {
+                 targetSpeed = ioAccess.read(
+                     targetName,
+-                    targetId,
++                    //targetId, //to convert real fan port index!
++                    FanIndex,
+                     entry,
+                     sysfs::hwmonio::retries,
+                     sysfs::hwmonio::delay);
+@@ -154,7 +283,7 @@ std::shared_ptr<T> addTarget(const SensorSet::key_type& sensor,
+                     Sensor::Device::Error;
+                 using metadata = xyz::openbmc_project::Sensor::
+                     Device::ReadFailure;
+-
++				std::cout << "cyril  : DIE  !!!!   DIE  !!!! DIE  !!!! DIE  !!!!   DIE  !!!!" << endl;
+                 report<ReadFailure>(
+                         metadata::CALLOUT_ERRNO(e.code().value()),
+                         metadata::CALLOUT_DEVICE_PATH(devPath.c_str()));
+@@ -163,7 +292,7 @@ std::shared_ptr<T> addTarget(const SensorSet::key_type& sensor,
+                         phosphor::logging::entry(
+                                 "FILE=%s", sysfsFullPath.c_str()));
+             }
+-
++		    
+             target = std::make_shared<T>(ioAccess.path(),
+                                          devPath,
+                                          targetId,
+@@ -172,8 +301,9 @@ std::shared_ptr<T> addTarget(const SensorSet::key_type& sensor,
+                                          deferSignals,
+                                          targetSpeed);
+             obj[type] = target;
++			std::cout << "cyril ------------------014 success !!-----down !" << endl;
+         }
+     }
+-
++	std::cout << "cyril ------------------015"<< endl;
+     return target;
+ }

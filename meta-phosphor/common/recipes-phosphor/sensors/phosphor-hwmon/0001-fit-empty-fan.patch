@@ -1,0 +1,12 @@
+diff --git a/sysfs.cpp b/sysfs.cpp
+index f689314..47df7af 100644
+--- a/sysfs.cpp
++++ b/sysfs.cpp
+@@ -358,6 +358,7 @@ int64_t HwmonIO::read(
+ #ifdef NEGATIVE_ERRNO_ON_FAIL
+                 return -rc;
+ #endif
++                return 0;
+ 
+                 // Work around GCC bugs 53984 and 66145 for callers by
+                 // explicitly raising system_error here.
