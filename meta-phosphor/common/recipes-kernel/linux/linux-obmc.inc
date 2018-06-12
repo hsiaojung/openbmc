@@ -14,7 +14,9 @@ SRC_URI += "file://phosphor-vlan.scc"
 SRC_URI += "file://phosphor-vlan.cfg"
 SRC_URI_append_df-obmc-ubi-fs = " file://0001-ARM-dts-Aspeed-Witherspoon-Update-BMC-partitioning.patch"
 SRC_URI += "file://0001-fit-21-hw.patch"
+SRC_URI += "file://0003-fit-fan-hw.patch"
 SRC_URI += "file://0007-add-IR35221.patch"
+
 
 LINUX_VERSION_EXTENSION ?= "-${SRCREV}"
 

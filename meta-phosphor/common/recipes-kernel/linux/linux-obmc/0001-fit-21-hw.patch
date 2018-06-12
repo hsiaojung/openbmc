@@ -387,7 +387,7 @@ index 18df9c7..73610e5 100644
 +	status = "okay";
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&pinctrl_pwm0_default &pinctrl_pwm1_default
-+		&pinctrl_pwm2_default &pinctrl_pwm3_default	&pinctrl_pwm4_default>;
++		&pinctrl_pwm2_default &pinctrl_pwm3_default	&pinctrl_pwm4_default &pinctrl_pwm5_default>;
 +
 +	fan@0 {
 +		reg = <0x00>;
