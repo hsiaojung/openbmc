@@ -22,11 +22,11 @@ index 04cb1b5..409dba6 100644
 -    {
 +    { 
 +    // cyril add to fan control!!!!!!1
-+	std::cout << "cyril FanPwm::target--Write target out to sysfs- start!!" << endl;
-+	std::cout << "cyril FanPwm::target Value of devPath is: " << devPath << endl;
++	//std::cout << "cyril FanPwm::target--Write target out to sysfs- start!!" << endl;
++	//std::cout << "cyril FanPwm::target Value of devPath is: " << devPath << endl;
 +
-+	std::cout << "cyril FanPwm::target Value of id is: " << id << endl;	
-+    std::cout << "cyril FanPwm::target Value of value is: " << value << endl;	 
++	//std::cout << "cyril FanPwm::target Value of id is: " << id << endl;	
++   //std::cout << "cyril FanPwm::target Value of value is: " << value << endl;	 
 +
 +	
 +	int i_auto = std::stoi (id ,nullptr,0);
@@ -34,15 +34,15 @@ index 04cb1b5..409dba6 100644
 +	if (i_auto > 6) {
 +		
 +		i_auto -= 6;
-+		std::cout << "cyril FanPwm::target id >6 ,i_auto is:" << i_auto  << endl;
++		//std::cout << "cyril FanPwm::target id >6 ,i_auto is:" << i_auto  << endl;
 +		
 +	} else {
 +	
-+		std::cout << "cyril FanPwm::target id < 6 ,i_auto is:" << i_auto  << endl;
++		//std::cout << "cyril FanPwm::target id < 6 ,i_auto is:" << i_auto  << endl;
 +	}
 +	
 +	std::string FanIndex = std::to_string(i_auto);
-+	std::cout << "cyril Value of FanIndex is: " << FanIndex << endl;
++	//std::cout << "cyril Value of FanIndex is: " << FanIndex << endl;
 +	
          std::string empty;
          //Write target out to sysfs
@@ -60,7 +60,7 @@ index 04cb1b5..409dba6 100644
          catch (const std::system_error& e)
          {
 +
-+			std::cout << "!!!!! cyril FanPwm::target--Write target  FAILEURE!!!!!!!!!" << endl;
++			//std::cout << "!!!!! cyril FanPwm::target--Write target  FAILEURE!!!!!!!!!" << endl;
 +
              using namespace sdbusplus::xyz::openbmc_project::Control::
                  Device::Error;
@@ -70,7 +70,7 @@ index 04cb1b5..409dba6 100644
          }
      }
 -
-+			std::cout << "cyril  FanPwm::target--Write target out to sysfs-------2" << endl;
++			//std::cout << "cyril  FanPwm::target--Write target out to sysfs-------2" << endl;
      return FanPwmObject::target(value);
  }
  
@@ -95,10 +95,10 @@ index 1541779..784eb13 100644
          {
 -            FanPwmObject::target(target);
 +       
-+			std::cout << "cyril ------------------001 " << endl;
-+			std::cout << "cyril Value of instancePath is: " << instancePath << endl;
-+			std::cout << "cyril Value of devPath is: " << devPath << endl;
-+			std::cout << "cyril Value of id is: " << id << endl;
++			//std::cout << "cyril ------------------001 " << endl;
++			//std::cout << "cyril Value of instancePath is: " << instancePath << endl;
++			//std::cout << "cyril Value of devPath is: " << devPath << endl;
++			//std::cout << "cyril Value of id is: " << id << endl;
 +            FanPwmObject::target(target); //create dbus!
          }
  
@@ -126,7 +126,7 @@ index 15ce946..047bba7 100644
  uint64_t FanSpeed::target(uint64_t value)
  {
 +
-+	std::cout << "cyril --FanSpeed::target....1   -Write target out to sysfs-------" << endl;
++	//std::cout << "cyril --FanSpeed::target....1   -Write target out to sysfs-------" << endl;
      auto curValue = FanSpeedObject::target();
  
      if (curValue != value)
@@ -135,7 +135,7 @@ index 15ce946..047bba7 100644
          catch (const std::system_error& e)
          {
 +
-+			std::cout << "cyril --FanSpeed::target....!!!!!!!!!!!!!!  -Write target out to sysfs-------" << endl;
++			 //std::cout << "cyril --FanSpeed::target....!!!!!!!!!!!!!!  -Write target out to sysfs-------" << endl;
              using namespace sdbusplus::xyz::openbmc_project::Control::
                  Device::Error;
              report<WriteFailure>(
@@ -144,7 +144,7 @@ index 15ce946..047bba7 100644
          }
      }
 -
-+	std::cout << "cyril --FanSpeed::target...2   -Write target out to sysfs-------" << endl;
++	 //std::cout << "cyril --FanSpeed::target...2   -Write target out to sysfs-------" << endl;
      return FanSpeedObject::target(value);
  }
  
@@ -153,7 +153,7 @@ index 15ce946..047bba7 100644
      {
          auto val = std::stoul(enable);
 -
-+		std::cout << "cyril -FanSpeed::enable()..make_sysfs_path -------1" << endl;
++		 //std::cout << "cyril -FanSpeed::enable()..make_sysfs_path -------1" << endl;
          try
          {
              ioAccess.write(
@@ -162,7 +162,7 @@ index 15ce946..047bba7 100644
                      xyz::openbmc_project::Control::Device::
                          WriteFailure::CALLOUT_DEVICE_PATH(devPath.c_str()));
 -
-+			std::cout << "cyril -FanSpeed::enable()..make_sysfs_path -------2" << endl;
++		     //std::cout << "cyril -FanSpeed::enable()..make_sysfs_path -------2" << endl;
              auto fullPath = sysfs::make_sysfs_path(
                      ioAccess.path(),
                      type::pwm,
@@ -198,25 +198,25 @@ index 02bdd4f..7e74603 100644
 -
 +	
 +	
-+	std::cout << "cyril ------------------002 " << endl;
-+	std::cout << "cyril Value of devPath is: " << devPath << endl;
++	//std::cout << "cyril ------------------002 " << endl;
++	//std::cout << "cyril Value of devPath is: " << devPath << endl;
 +	
      if (InterfaceType::FAN_PWM == type)
      {
-+		std::cout << "cyril ------------------003 " << endl;
++		 //std::cout << "cyril ------------------003 " << endl;
 +
          targetName = pwm;
          // If PWM_TARGET is set, use the specified pwm id
          auto id = env::getEnv("PWM_TARGET", sensor);
-+		std::cout << "cyril Value of id is: " << id << endl;
++		 //std::cout << "cyril Value of id is: " << id << endl;
          if (!id.empty())
          {
-+        	std::cout << "cyril ------------------004 " << endl;
++        	//std::cout << "cyril ------------------004 " << endl;
              targetId = id;
          }
          entry = empty;
 -    }
-+		std::cout << "cyril ------------------005 " << endl;
++		 //std::cout << "cyril ------------------005 " << endl;
  
 +    }
 +	
@@ -226,29 +226,29 @@ index 02bdd4f..7e74603 100644
                                             entry);
 +
 +	
-+	std::cout << "cyril ------------------006  start!!" << endl;
-+	std::cout << "cyril Value of sysfsFullPath is: " << sysfsFullPath << endl;
-+	std::cout << "cyril Value of entry is: " << entry << endl;
-+	std::cout << "cyril Value of targetName is: " << targetName << endl;
-+	std::cout << "cyril Value of targetId is: " << targetId << endl;
-+	std::cout << "cyril Value of pwm is: " << pwm << endl;
-+	std::cout << "cyril Value of empty is: " << empty << endl;
++	//std::cout << "cyril ------------------006  start!!" << endl;
++	//std::cout << "cyril Value of sysfsFullPath is: " << sysfsFullPath << endl;
++	//std::cout << "cyril Value of entry is: " << entry << endl;
++	//std::cout << "cyril Value of targetName is: " << targetName << endl;
++	//std::cout << "cyril Value of targetId is: " << targetId << endl;
++	//std::cout << "cyril Value of pwm is: " << pwm << endl;
++	//std::cout << "cyril Value of empty is: " << empty << endl;
 +
 +	/*
 +	auto do_setp = 0;
 +	if (fs::exists(sysfsFullPath)) {
 +		do_setp = 1;
-+		std::cout << "cyril ------------------006.1 end !!!" << endl;
++		//std::cout << "cyril ------------------006.1 end !!!" << endl;
 +
 +    } else {
 +		std::size_t found = sysfsFullPath.find("pwm");
 +		if (found!=std::string::npos) {
 +			do_setp = 1;
-+			std::cout << "cyril ------------------006.2 end !!!" << endl;
++			//std::cout << "cyril ------------------006.2 end !!!" << endl;
 +
 +		}else {
 +			do_setp = 0;
-+			std::cout << "cyril ------------------006.3 end !!!" << endl;
++			//std::cout << "cyril ------------------006.3 end !!!" << endl;
 +		}		
 +    }		
 +	if (do_setp == 1)freferferf
@@ -304,7 +304,7 @@ index 02bdd4f..7e74603 100644
 +		
      {
 +
-+		std::cout << "cyril ------------------007 " << endl;
++		 //std::cout << "cyril ------------------007 " << endl;
 + 
 +	
          auto useTarget = true;
@@ -318,7 +318,7 @@ index 02bdd4f..7e74603 100644
              if (mode == RPM_TARGET)
              {
 +            
-+		std::cout << "cyril ------------------009 " << endl;
++		         //std::cout << "cyril ------------------009 " << endl;
 + 
                  if (type != InterfaceType::FAN_SPEED)
                  {
@@ -328,12 +328,12 @@ index 02bdd4f..7e74603 100644
              else if (mode == PWM_TARGET)
              {
 +            	
-+		std::cout << "cyril ------------------010" << endl;
++		//std::cout << "cyril ------------------010" << endl;
 + 
                  if (type != InterfaceType::FAN_PWM)
                  {
 +                	
-+		std::cout << "cyril ------------------011" << endl;
++		//std::cout << "cyril ------------------011" << endl;
 + 
                      useTarget = false;
                  }
@@ -341,7 +341,7 @@ index 02bdd4f..7e74603 100644
              else
              {
 +            	
-+		std::cout << "cyril ------------------012" << endl;
++		//std::cout << "cyril ------------------012" << endl;
 + 
                  using namespace phosphor::logging;
                  log<level::ERR>("Invalid TARGET_MODE env var found",
@@ -352,7 +352,7 @@ index 02bdd4f..7e74603 100644
          {
 -            uint32_t targetSpeed = 0;
 +        	
-+			std::cout << "cyril ------------------013 force set 211" << endl;
++			//std::cout << "cyril ------------------013 force set 211" << endl;
 + 
 +            uint32_t targetSpeed = 188;
  
@@ -361,16 +361,16 @@ index 02bdd4f..7e74603 100644
 +			if (i_auto > 6) {
 +				
 +				i_auto -= 6;
-+				std::cout << "cyril -013.1-------i_auto" << i_auto  << endl;
++				//std::cout << "cyril -013.1-------i_auto" << i_auto  << endl;
 +				
 +			} else {
 +			
-+				std::cout << "cyril -013.2-------i_auto" << i_auto  << endl;
++				//std::cout << "cyril -013.2-------i_auto" << i_auto  << endl;
 +			}
 +			
 +			std::string FanIndex = std::to_string(i_auto);
-+			std::cout << "cyril Value of FanIndex is: " << FanIndex << endl;
-+			std::cout << "cyril Value of targetId is: " << targetId << endl;
++			//std::cout << "cyril Value of FanIndex is: " << FanIndex << endl;
++			//std::cout << "cyril Value of targetId is: " << targetId << endl;
 +			
              try
              {
@@ -387,7 +387,7 @@ index 02bdd4f..7e74603 100644
                  using metadata = xyz::openbmc_project::Sensor::
                      Device::ReadFailure;
 -
-+				std::cout << "cyril  : DIE  !!!!   DIE  !!!! DIE  !!!! DIE  !!!!   DIE  !!!!" << endl;
++				//std::cout << "cyril  : DIE  !!!!   DIE  !!!! DIE  !!!! DIE  !!!!   DIE  !!!!" << endl;
                  report<ReadFailure>(
                          metadata::CALLOUT_ERRNO(e.code().value()),
                          metadata::CALLOUT_DEVICE_PATH(devPath.c_str()));
@@ -404,10 +404,10 @@ index 02bdd4f..7e74603 100644
                                           deferSignals,
                                           targetSpeed);
              obj[type] = target;
-+			std::cout << "cyril ------------------014 success !!-----down !" << endl;
++			 //std::cout << "cyril ------------------014 success !!-----down !" << endl;
          }
      }
 -
-+	std::cout << "cyril ------------------015"<< endl;
++	 //std::cout << "cyril ------------------015"<< endl;
      return target;
  }
