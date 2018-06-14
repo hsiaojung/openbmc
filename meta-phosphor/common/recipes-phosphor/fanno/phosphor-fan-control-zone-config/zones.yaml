@@ -1,6 +1,6 @@
 
 manager_configuration:
-  power_on_delay: 20
+  power_on_delay: 5
 
 zone_configuration:
 
@@ -8,9 +8,9 @@ zone_configuration:
 - zone_conditions:
   zones:
     - zone: 0
-      full_speed: 199
-      default_floor: 195
+      full_speed: 200
+      default_floor: 199
       increase_delay: 5
-      decrease_interval: 30
+      decrease_interval: 10
 
 

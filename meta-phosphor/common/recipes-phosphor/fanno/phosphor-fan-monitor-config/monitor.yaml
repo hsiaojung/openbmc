@@ -48,7 +48,7 @@ fans:
     deviation: 15
     num_sensors_nonfunc_for_fan_nonfunc: 1
     sensors:
-      - name: fan3
+      - name: fan4
         has_target: true
         target_interface: xyz.openbmc_project.Control.FanPwm
         factor: 21
