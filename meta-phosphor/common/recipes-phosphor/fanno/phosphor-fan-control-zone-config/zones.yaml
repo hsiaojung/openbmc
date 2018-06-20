@@ -8,8 +8,8 @@ zone_configuration:
 - zone_conditions:
   zones:
     - zone: 0
-      full_speed: 200
-      default_floor: 199
+      full_speed: 13
+      default_floor: 1
       increase_delay: 5
       decrease_interval: 10
 

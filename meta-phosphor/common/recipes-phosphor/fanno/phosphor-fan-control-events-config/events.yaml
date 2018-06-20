@@ -174,42 +174,6 @@ actions:
           - delta
 
 events:
-    - name: missing_before_high_speed_air
-      groups:
-          - name: air_cooled_zone0_fans
-            interface: xyz.openbmc_project.Inventory.Item
-            property:
-                name: Present
-                type: bool
-      matches:
-          - name: propertiesChanged
-      actions:
-          - name: count_state_before_speed
-            count: 1
-            property:
-                value: false
-                type: bool
-            speed:
-                value: 51
-                type: uint64_t
-    - name: fails_before_high_speed_air
-      groups:
-          - name: air_cooled_zone0_fans
-            interface: xyz.openbmc_project.State.Decorator.OperationalStatus
-            property:
-                name: Functional
-                type: bool
-      matches:
-          - name: propertiesChanged
-      actions:
-          - name: count_state_before_speed
-            count: 1
-            property:
-                value: false
-                type: bool
-            speed:
-                value: 52
-                type: uint64_t
     - name: set_air_cooled_speed_boundaries_based_on_ambient
       groups:
           - name: zone0_ambient
@@ -231,7 +195,7 @@ events:
           - name: set_ceiling_from_average_sensor_value
             map:
                 value:
-                    - 25000: 120
-                    - 27000: 131
+                    - 25000: 175
+                    - 27000: 255
                 type: std::map<int64_t, uint64_t>
   
