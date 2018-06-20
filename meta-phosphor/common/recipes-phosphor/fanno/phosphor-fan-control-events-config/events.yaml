@@ -176,7 +176,7 @@ actions:
 events:
     - name: set_air_cooled_speed_boundaries_based_on_ambient
       groups:
-          - name: zone0_ambient
+          - name: zone0_cores
             interface: xyz.openbmc_project.Sensor.Value
             property:
                 name: Value
@@ -187,15 +187,16 @@ events:
           - name: set_floor_from_average_sensor_value
             map:
                 value:
-                    - 27000: 130
-                    - 32000: 140
-                    - 37000: 150
-                    - 40000: 160
+                    - 35000: 110
+                    - 39000: 140
+                    - 43000: 170
+                    - 47000: 200
+                    - 51000: 255
                 type: std::map<int64_t, uint64_t>
           - name: set_ceiling_from_average_sensor_value
             map:
                 value:
-                    - 25000: 175
+                    - 25000: 100
                     - 27000: 255
                 type: std::map<int64_t, uint64_t>
   
