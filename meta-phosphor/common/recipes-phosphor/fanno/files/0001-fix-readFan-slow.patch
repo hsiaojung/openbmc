@@ -1,0 +1,582 @@
+diff --git a/control/actions.cpp b/control/actions.cpp
+index b162602..f9bd3f3 100644
+--- a/control/actions.cpp
++++ b/control/actions.cpp
+@@ -1,4 +1,12 @@
+ #include "actions.hpp"
++#include <iostream>
++#include <fstream>
++
++#include <vector>
++#include <string>
++
++
++using namespace std;
+ 
+ namespace phosphor
+ {
+@@ -13,6 +21,9 @@ using namespace phosphor::fan;
+ 
+ Action call_actions_based_on_timer(Timer&& tConf, std::vector<Action>&& actions)
+ {
++
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     return [tConf = std::move(tConf),
+             actions = std::move(actions)](control::Zone& zone,
+                                           const Group& group)
+@@ -80,6 +91,8 @@ Action call_actions_based_on_timer(Timer&& tConf, std::vector<Action>&& actions)
+ 
+ void default_floor_on_missing_owner(Zone& zone, const Group& group)
+ {
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     // Set/update the services of the group
+     zone.setServices(&group);
+     auto services = zone.getGroupServices(&group);
+@@ -100,6 +113,9 @@ void default_floor_on_missing_owner(Zone& zone, const Group& group)
+ 
+ Action set_speed_on_missing_owner(uint64_t speed)
+ {
++
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     return [speed](control::Zone& zone, const Group& group)
+     {
+         // Set/update the services of the group
+@@ -124,6 +140,9 @@ Action set_speed_on_missing_owner(uint64_t speed)
+ void set_request_speed_base_with_max(control::Zone& zone,
+                                      const Group& group)
+ {
++
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     int64_t base = 0;
+     std::for_each(
+             group.begin(),
+@@ -150,10 +169,16 @@ void set_request_speed_base_with_max(control::Zone& zone,
+ Action set_floor_from_average_sensor_value(
+         std::map<int64_t, uint64_t>&& val_to_speed)
+ {
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     return [val_to_speed = std::move(val_to_speed)](control::Zone& zone,
+                                                     const Group& group)
+     {
++    	
++    	
+         auto speed = zone.getDefFloor();
++		//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++		
+         if (group.size() != 0)
+         {
+             auto count = 0;
+@@ -163,6 +188,13 @@ Action set_floor_from_average_sensor_value(
+                     0,
+                     [&zone, &count](int64_t sum, auto const& entry)
+                     {
++					   	//std::cout << "set_floor_from_average_sensor_value:std (entry.first)=   "<<entry.first<<endl; 
++						//std::cout << "set_floor_from_average_sensor_value:std::get<intfPos>(entry.second)=   "<<std::get<intfPos>(entry.second)<<endl; 
++						//std::cout << "set_floor_from_average_sensor_value:std::get<propPos>(entry.second)=   "<<std::get<propPos>(entry.second)<<endl; 
++						/*std::cout << "set_floor_from_average_sensor_value:std:: all=   "<< zone.template getPropertyValue<int64_t>(
++                                    entry.first,
++                                    std::get<intfPos>(entry.second),
++                                    std::get<propPos>(entry.second) )<<endl; */
+                         try
+                         {
+                             return sum +
+@@ -177,24 +209,81 @@ Action set_floor_from_average_sensor_value(
+                             return sum;
+                         }
+                     });
++			
++			std::cout << "cyrilchang :" /* start here*/  << "bef sumValue" << sumValue  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			
++			ifstream hwmon1("/sys/class/hwmon/hwmon4/temp1_input");
++			ifstream hwmon2("/sys/class/hwmon/hwmon5/temp1_input");
++			ifstream hwmon3("/sys/class/hwmon/hwmon6/temp1_input");
++			ifstream hwmon4("/sys/class/hwmon/hwmon7/temp1_input");
++			ifstream hwmon5("/sys/class/hwmon/hwmon8/temp1_input");
++			ifstream hwmon6("/sys/class/hwmon/hwmon9/temp1_input");
++			
++			string inputStr1;
++			string inputStr2;
++			string inputStr3;
++			string inputStr4;
++			string inputStr5;
++			string inputStr6;
++			
++			getline(hwmon1, inputStr1);
++			getline(hwmon2, inputStr2);
++			getline(hwmon3, inputStr3);
++			getline(hwmon4, inputStr4);
++			getline(hwmon5, inputStr5);
++			getline(hwmon6, inputStr6);
++
++			auto hwmon1dec = std::stoi( inputStr1 );
++			std::cout << "cyrilchang :" /* start here*/  << "hwmon1dec = " << hwmon1dec  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			auto hwmon2dec = std::stoi( inputStr2 );
++			std::cout << "cyrilchang :" /* start here*/  << "hwmon2dec = " << hwmon2dec  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			auto hwmon3dec = std::stoi( inputStr3 );
++			std::cout << "cyrilchang :" /* start here*/  << "hwmon3dec = " << hwmon3dec  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			auto hwmon4dec = std::stoi( inputStr4 );
++			std::cout << "cyrilchang :" /* start here*/  << "hwmon4dec = " << hwmon4dec  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			auto hwmon5dec = std::stoi( inputStr5 );
++			std::cout << "cyrilchang :" /* start here*/  << "hwmon5dec = " << hwmon5dec  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			auto hwmon6dec = std::stoi( inputStr6 );
++			std::cout << "cyrilchang :" /* start here*/  << "hwmon6dec = " << hwmon6dec  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			auto sumValue2 = sumValue ;
++			sumValue2 = 0;
++			sumValue2 += hwmon1dec;
++			sumValue2 += hwmon2dec;
++			sumValue2 += hwmon3dec;
++			sumValue2 += hwmon4dec;
++			sumValue2 += hwmon5dec;
++			sumValue2 += hwmon6dec;
++			
++			sumValue = sumValue2;
++		
++			std::cout << "cyrilchang :" /* start here*/  << "sumValue = " << sumValue   << ",  sumValue2 = " << sumValue2  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			
+             if ((group.size() - count) > 0)
+             {
++            	
+                 auto groupSize = static_cast<int64_t>(group.size());
++				//std::cout << "cyrilchang :" /* start here*/  << " group.size= "<<group.size()  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+                 auto avgValue = sumValue / (groupSize - count);
++				
++				//std::cout << "cyrilchang :" /* start here*/  << "avgValue= "<< avgValue /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 						
+                 auto it = std::find_if(
+                     val_to_speed.begin(),
+                     val_to_speed.end(),
+                     [&avgValue](auto const& entry)
+                     {
++						//std::cout << "cyrilchang :" /* start here*/  << "avgValue= "<< avgValue /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 						
+                         return avgValue < entry.first;
+                     }
+                 );
+                 if (it != std::end(val_to_speed))
+                 {
++					//std::cout << "cyrilchang :" /* start here*/  << "speed= "<< speed /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 	
+                     speed = (*it).second;
++					//std::cout << "cyrilchang :" /* start here*/  << "speed= "<< speed /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 	
+                 }
+             }
+         }
++		//std::cout << "cyrilchang :" /* start here*/  << "down of  " /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 	
+         zone.setFloor(speed);
+     };
+ }
+@@ -202,10 +291,14 @@ Action set_floor_from_average_sensor_value(
+ Action set_ceiling_from_average_sensor_value(
+         std::map<int64_t, uint64_t>&& val_to_speed)
+ {
++
++	//std::cout << "cyrilchang :" /* start here*/  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 	
+     return [val_to_speed = std::move(val_to_speed)](Zone& zone,
+                                                     const Group& group)
+     {
+         auto speed = zone.getCeiling();
++		
++		//std::cout << "cyrilchang :" /* start here*/  << "speed= "<< speed  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 	
+         if (group.size() != 0)
+         {
+             auto count = 0;
+@@ -217,6 +310,14 @@ Action set_ceiling_from_average_sensor_value(
+                     {
+                         try
+                         {
++							//std::cout << "Set_ceiling_from_average_sensor_value:std (entry.first)=   "<<entry.first<<endl; 
++							//std::cout << "Set_ceiling_from_average_sensor_value:std::get<intfPos>(entry.second)=   "<<std::get<intfPos>(entry.second)<<endl; 
++							//std::cout << "Set_ceiling_from_average_sensor_value:std::get<propPos>(entry.second)=   "<<std::get<propPos>(entry.second)<<endl; 
++							/*std::cout << "Set_ceiling_from_average_sensor_value:std:: all=   "<< zone.template getPropertyValue<int64_t>(
++								               entry.first,
++                                    std::get<intfPos>(entry.second),
++                                    std::get<propPos>(entry.second) )<<endl;*/
++							
+                             return sum +
+                                 zone.template getPropertyValue<int64_t>(
+                                     entry.first,
+@@ -307,6 +408,7 @@ Action set_ceiling_from_average_sensor_value(
+                 }
+             }
+         }
++		
+         zone.setCeiling(speed);
+     };
+ }
+diff --git a/control/actions.hpp b/control/actions.hpp
+index b079bf4..b1f2476 100644
+--- a/control/actions.hpp
++++ b/control/actions.hpp
+@@ -4,7 +4,9 @@
+ #include <numeric>
+ #include "types.hpp"
+ #include "zone.hpp"
+-
++#include <iostream>
++#include <fstream>
++using namespace std; 
+ namespace phosphor
+ {
+ namespace fan
+@@ -84,6 +86,9 @@ void set_request_speed_base_with_max(Zone& zone, const Group& group);
+ template <typename T>
+ auto count_state_before_speed(size_t count, T&& state, uint64_t speed)
+ {
++
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     return [count,
+             speed,
+             state = std::forward<T>(state)](auto& zone, auto& group)
+@@ -165,6 +170,9 @@ Action set_ceiling_from_average_sensor_value(
+ template <typename T>
+ auto set_net_increase_speed(T&& state, T&& factor, uint64_t speedDelta)
+ {
++
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     return [speedDelta,
+             factor = std::forward<T>(factor),
+             state = std::forward<T>(state)](auto& zone, auto& group)
+@@ -226,6 +234,8 @@ auto set_net_increase_speed(T&& state, T&& factor, uint64_t speedDelta)
+ template <typename T>
+ auto set_net_decrease_speed(T&& state, T&& factor, uint64_t speedDelta)
+ {
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     return [speedDelta,
+             factor = std::forward<T>(factor),
+             state = std::forward<T>(state)](auto& zone, auto& group)
+diff --git a/control/fan.cpp b/control/fan.cpp
+index d4303cf..e4855f2 100644
+--- a/control/fan.cpp
++++ b/control/fan.cpp
+@@ -16,7 +16,11 @@
+ #include <string>
+ #include "fan.hpp"
+ #include "sdbusplus.hpp"
++#include <iostream>  
++#include <sys/types.h>
+ 
++
++using namespace std;  
+ namespace phosphor
+ {
+ namespace fan
+@@ -62,6 +66,8 @@ Fan::Fan(sdbusplus::bus::bus& bus, const FanDefinition& def):
+ 
+ void Fan::setSpeed(uint64_t speed)
+ {
++
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+     for (auto& sensor : _sensors)
+     {
+         auto value = speed;
+diff --git a/control/zone.cpp b/control/zone.cpp
+index f4c50d9..d9bb87a 100644
+--- a/control/zone.cpp
++++ b/control/zone.cpp
+@@ -21,6 +21,11 @@
+ #include "zone.hpp"
+ #include "utility.hpp"
+ #include "sdbusplus.hpp"
++#include "manager.hpp"
++#include <iostream>  
++#include <fstream>
++
++using namespace std;  
+ 
+ namespace phosphor
+ {
+@@ -51,6 +56,8 @@ Zone::Zone(Mode mode,
+     _sdEvents(events)
+ {
+     auto& fanDefs = std::get<fanListPos>(def);
++	fstream myfile;  
++	//std::cout << "cyrilchang"<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+ 
+     for (auto& def : fanDefs)
+     {
+@@ -81,30 +88,64 @@ Zone::Zone(Mode mode,
+ 
+ void Zone::setSpeed(uint64_t speed)
+ {
++
++   uint64_t targetSSSpeed = 123;
++   
++	targetSSSpeed +=1;
++   	/*
++	auto cyrilAsk = getPropValueVariant(
++					"/xyz/openbmc_project/sensors/temperature/boardTemp0",
++                    "xyz.openbmc_project.Sensor.Value",
++                    "Value");
++	
++	cout << "cyril  Zone::setSpeed pro:"<<util::SDBusPlus::getProperty<uint64_t>(
++                _bus,
++                "/xyz/openbmc_project/sensors/temperature/boardTemp1",
++                 "xyz.openbmc_project.Sensor.Value",
++                "Vaule")<<endl; 	
++	
++	targetSSSpeed = util::SDBusPlus::getProperty<uint64_t>(
++                _bus,
++                "/xyz/openbmc_project/sensors/temperature/boardTemp1",
++                 "xyz.openbmc_project.Sensor.Value",
++                "Vaule");
++		*/
++    cout << "cyrilchang :" /* start here*/<< "_isActive:"<<_isActive   << "speed:"<<speed  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     if (_isActive)
+     {
++		 
+         _targetSpeed = speed;
+         for (auto& fan : _fans)
+         {
+-            fan->setSpeed(_targetSpeed);
++			fan->setSpeed(_targetSpeed);
+         }
+     }
+ }
+ 
+ void Zone::setFullSpeed()
+ {
++
++	cout << "cyrilchang :" /* start here*/   << "_fullSpeed:"<<_fullSpeed  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++
+     if (_fullSpeed != 0)
+     {
+         _targetSpeed = _fullSpeed;
++
++		//cout << "cyrilchang :" /* start here*/   /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+         for (auto& fan : _fans)
+         {
++			cout << "cyrilchang :" /* start here*/ << "_targetSpeed:"<<_targetSpeed  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+             fan->setSpeed(_targetSpeed);
+         }
+     }
++	//cout << "cyrilchang :" /* start here*/ << "_targetSpeed:"<<_targetSpeed  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+ }
+ 
+ void Zone::setActiveAllow(const Group* group, bool isActiveAllow)
+ {
++ 	cout << "cyrilchang :" /* start here*/ << "isActiveAllow:"<<isActiveAllow  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     _active[*(group)] = isActiveAllow;
+     if (!isActiveAllow)
+     {
+@@ -123,6 +164,8 @@ void Zone::setActiveAllow(const Group* group, bool isActiveAllow)
+ void Zone::removeService(const Group* group,
+                          const std::string& name)
+ {
++	cout << "cyrilchang :" /* start here*/ /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     try
+     {
+         auto& sNames = _services.at(*group);
+@@ -150,6 +193,8 @@ void Zone::setServiceOwner(const Group* group,
+                            const std::string& name,
+                            const bool hasOwner)
+ {
++	cout << "cyrilchang :" /* start here*/ /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     try
+     {
+         auto& sNames = _services.at(*group);
+@@ -207,24 +252,37 @@ void Zone::setServices(const Group* group)
+ 
+ void Zone::setFloor(uint64_t speed)
+ {
++
++	cout << "cyrilchang :" /* start here*/ /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     // Check all entries are set to allow floor to be set
+     auto pred = [](auto const& entry) {return entry.second;};
+     auto setFloor = std::all_of(_floorChange.begin(),
+                                 _floorChange.end(),
+                                 pred);
++	
+     if (setFloor)
+     {
+-        _floorSpeed = speed;
++         _floorSpeed = speed;
+         // Floor speed above target, update target to floor speed
+         if (_targetSpeed < _floorSpeed)
+         {
++        	cout << "cyrilchang :" /* start here*/<<"_floorSpeed" << _floorSpeed  <<", _targetSpeed" << _targetSpeed /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+             requestSpeedIncrease(_floorSpeed - _targetSpeed);
+-        }
++        } else {
++			 cout << "cyrilchang :" /* start here*/<<"_floorSpeed" << _floorSpeed /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 	
++			 setSpeed(_floorSpeed);
++		}
++		
+     }
++	
++	
+ }
+ 
+ void Zone::requestSpeedIncrease(uint64_t targetDelta)
+ {
++	 cout << "cyrilchang :" /* start here*/  << ",targetDelta ="   <<  targetDelta  /* end here*/ << ",_incSpeedDelta ="   <<  _incSpeedDelta << ",_ceilingSpeed ="   <<  _ceilingSpeed  << ",_targetSpeed ="   <<  _targetSpeed<<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++					
+     // Only increase speed when delta is higher than
+     // the current increase delta for the zone and currently under ceiling
+     if (targetDelta > _incSpeedDelta &&
+@@ -236,13 +294,17 @@ void Zone::requestSpeedIncrease(uint64_t targetDelta)
+         // Target speed can not go above a defined ceiling speed
+         if (requestTarget > _ceilingSpeed)
+         {
++        	cout << "cyrilchang :" /* start here*/  << "_targetSpeed ="   <<  _targetSpeed  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+             requestTarget = _ceilingSpeed;
+         }
++		
+         // Cancel current timer countdown
+         if (_incTimer.running())
+         {
++        	cout << "cyrilchang :" /* start here*/  << "_targetSpeed ="   <<  _targetSpeed  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+             _incTimer.stop();
+         }
++		cout << "cyrilchang :" /* start here*/  << "_targetSpeed ="   <<  _targetSpeed  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+         setSpeed(requestTarget);
+         // Start timer countdown for fan speed increase
+         _incTimer.start(_incDelay,
+@@ -252,6 +314,9 @@ void Zone::requestSpeedIncrease(uint64_t targetDelta)
+ 
+ void Zone::incTimerExpired()
+ {
++
++	cout << "cyrilchang :" /* start here*/    /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++			
+     // Clear increase delta when timer expires allowing additional speed
+     // increase requests or speed decreases to occur
+     _incSpeedDelta = 0;
+@@ -259,6 +324,9 @@ void Zone::incTimerExpired()
+ 
+ void Zone::requestSpeedDecrease(uint64_t targetDelta)
+ {
++	
++	cout << "cyrilchang :" /* start here*/    /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++		
+     // Only decrease the lowest target delta requested
+     if (_decSpeedDelta == 0 || targetDelta < _decSpeedDelta)
+     {
+@@ -268,6 +336,9 @@ void Zone::requestSpeedDecrease(uint64_t targetDelta)
+ 
+ void Zone::decTimerExpired()
+ {
++	
++	cout << "cyrilchang :" /* start here*/    /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++		
+     // Check all entries are set to allow a decrease
+     auto pred = [](auto const& entry) {return entry.second;};
+     auto decAllowed = std::all_of(_decAllowed.begin(),
+@@ -278,12 +349,21 @@ void Zone::decTimerExpired()
+     // where no requested increases exist and
+     // the increase timer is not running
+     // (i.e. not in the middle of increasing)
++    
++	//cout << "cyrilchang :" /* start here*/    /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++		
+     if (decAllowed && _incSpeedDelta == 0 && !_incTimer.running())
+     {
++    	
++		//cout << "cyrilchang :" /* start here*/    /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++		
+         auto requestTarget = getRequestSpeedBase();
+         // Request target speed should not start above ceiling
+         if (requestTarget > _ceilingSpeed)
+         {
++        
++			//cout << "cyrilchang :" /* start here*/    /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++		
+             requestTarget = _ceilingSpeed;
+         }
+         // Target speed can not go below the defined floor speed
+@@ -294,9 +374,15 @@ void Zone::decTimerExpired()
+         }
+         else
+         {
++        
++			//cout << "cyrilchang :" /* start here*/    /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++		
+             requestTarget = requestTarget - _decSpeedDelta;
+         }
+-        setSpeed(requestTarget);
++		
++			//cout << "cyrilchang :" /* start here*/    /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++        	setSpeed(requestTarget);		
++			//cout << "cyrilchang :" /* start here*/  "down of"  /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
+     }
+     // Clear decrease delta when timer expires
+     _decSpeedDelta = 0;
+@@ -305,6 +391,9 @@ void Zone::decTimerExpired()
+ 
+ void Zone::initEvent(const SetSpeedEvent& event)
+ {
++
++	//cout << "cyrilchang :" /* start here*/   /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     sdbusplus::message::message nullMsg{nullptr};
+ 
+     for (auto& sig : std::get<signalsPos>(event))
+@@ -374,6 +463,9 @@ void Zone::initEvent(const SetSpeedEvent& event)
+ 
+ void Zone::removeEvent(const SetSpeedEvent& event)
+ {
++
++	cout << "cyrilchang :" /* start here*/   /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     // Find the signal event to be removed
+     auto it = std::find_if(
+         _signalEvents.begin(),
+@@ -422,6 +514,8 @@ std::vector<TimerEvent>::iterator Zone::findTimer(
+         const Group& eventGroup,
+         const std::vector<Action>& eventActions)
+ {
++	//cout << "cyrilchang :" /* start here*/   /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     for (auto it = _timerEvents.begin(); it != _timerEvents.end(); ++it)
+     {
+         auto teEventData = *std::get<timerEventDataPos>(*it);
+@@ -452,6 +546,9 @@ std::vector<TimerEvent>::iterator Zone::findTimer(
+ 
+ void Zone::timerExpired(Group eventGroup, std::vector<Action> eventActions)
+ {
++
++	cout << "cyrilchang :" /* start here*/   /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     // Perform the actions
+     std::for_each(eventActions.begin(),
+                   eventActions.end(),
+@@ -464,6 +561,9 @@ void Zone::timerExpired(Group eventGroup, std::vector<Action> eventActions)
+ void Zone::handleEvent(sdbusplus::message::message& msg,
+                        const EventData* eventData)
+ {
++
++	cout << "cyrilchang :" /* start here*/   /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     // Handle the callback
+     std::get<eventHandlerPos>(*eventData)(_bus, msg, *this);
+     // Perform the actions
+@@ -480,6 +580,10 @@ void Zone::handleEvent(sdbusplus::message::message& msg,
+ const std::string& Zone::getService(const std::string& path,
+                                     const std::string& intf)
+ {
++
++
++	cout << "cyrilchang :" /* start here*/   /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     // Retrieve service from cache
+     auto srvIter = _servTree.find(path);
+     if (srvIter != _servTree.end())
+@@ -513,6 +617,9 @@ const std::string& Zone::addServices(const std::string& path,
+                                      const std::string& intf,
+                                      int32_t depth)
+ {
++
++	cout << "cyrilchang :" /* start here*/   /* end here*/  <<",file:"<<__FILE__<<",FUN: "<<__func__<< ",Line:"<<__LINE__<<endl; 
++	
+     static const std::string empty = "";
+     auto it = _servTree.end();
+ 
