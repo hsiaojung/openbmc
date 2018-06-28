@@ -16,7 +16,7 @@ SRC_URI_append_df-obmc-ubi-fs = " file://0001-ARM-dts-Aspeed-Witherspoon-Update-
 SRC_URI += "file://0001-fit-21-hw.patch"
 SRC_URI += "file://0003-fit-fan-hw.patch"
 SRC_URI += "file://0007-add-IR35221.patch"
-
+SRC_URI += "file://0008-add-psu-info.patch"
 
 LINUX_VERSION_EXTENSION ?= "-${SRCREV}"
 

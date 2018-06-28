@@ -1,0 +1,22 @@
+diff --git a/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts b/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts
+index 2fb14a9..a745efc 100644
+--- a/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts
++++ b/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts
+@@ -258,9 +258,15 @@
+          reg = <0x77>;
+ 
+     };
++    power-supply@58 {
++        compatible = "ibm,cffps1";
++        reg = <0x58>;
++    };  
+ 
+-
+-
++    power-supply@59 {
++        compatible = "ibm,cffps1";
++        reg = <0x59>;
++    };  
+ 
+ };
+ 
