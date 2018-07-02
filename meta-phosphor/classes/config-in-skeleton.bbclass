@@ -24,6 +24,9 @@ python() {
 do_make_setup() {
         cp ${S}/${_config_in_skeleton} \
                 ${S}/obmc_system_config.py
+		cp -rf  $PWD/../Palmetto.py  \
+               ${S}/obmc_system_config.py
+
         cat <<EOF > ${S}/setup.py
 from distutils.core import setup
 
