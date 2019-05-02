@@ -1,0 +1,561 @@
+-------------------------------------------------
+Gard~------------------------------------------------  ----------------------------------------------------------------------------------------------------
+clean gard!/local
+pflash -c -P GUARD -f 
+
+
+Host Clear GARD
+On OpenPOWER systems, the host maintains a record of bad or non-working components on the GARD partition. This record is referenced by the host on subsequent boots to determine which parts should be ignored.
+
+The BMC implements a function that simply clears this partition. This function can be called as follows:
+
+Method 1: From the BMC command line:
+
+busctl call org.open_power.Software.Host.Updater \
+  /org/open_power/control/gard \
+  xyz.openbmc_project.Common.FactoryReset Reset
+
+
+cat in1_alarm ;cat in1_input;cat in1_label
+ cat in2_input ;cat in2_label ;cat in2_min;cat in2_min_alarm
+ cat ./curr1_input ;cat curr1_label 
+  cat ./power1_input ;cat power1_label
+
+ journalctl --no-pager | egrep
+
+
+sudo dd if=../rec/uboot_mtd2  of=./tmp/work/palmetto-openbmc-linux-gnueabi/obmc-phosphor-image/1.0-r0/deploy-obmc-phosphor-image-image-complete/$obmcimage bs=4096 seek=6;
+
+~------------------------------------------------ going ----------------------------------------------------------------------------------------------------
+openbmc/meta-phosphor/classes/config-in-skeleton.bbclass
+ vim ./meta-phosphor/classes/skeleton-rev.bbclass
+ ./meta-openbmc-machines/meta-openpower/meta-ibm/meta-palmetto/recipes-phosphor/workbook/palmetto-config.bb
+ cd ./meta-openbmc-machines/meta-openpower/meta-ibm/meta-palmetto/recipes-phosphor/workbook/
+~------------------------------------------------compress ----------------------------------------------------------------------------------------------------
+ -mx=[壓縮比] -t[類型] -v[分割大小] [檔名] [欲壓縮檔案]
+ 範例 (flag與option間無空格)
+ 將 verybigfile.ext 用zip格式壓縮成 archive.zip, 每200M分割, 用最高壓縮比(9最高，1最低)
+ 7z a -mx=9 -tzip -v200m archive.zip verybigfile.ext
+ 最後會輸出archive.zip.001, archive.zip.002 ....
+7z a -v2g  opopenbmc.7z  openbmc/
+ 7z a -mx=9 -tzip -v200m archive.zip verybigfile.ext
+
+
+ gunzip -c ${IMG_PATH}/${2}.img.gz | dd of=${MMC_DEV} bs=1M
+~------------------------------------------------  update ----------------------------------------------------------------------------------------------------
+
+  bitbake -c cleansstate obmc-phosphor-image phosphor-fan;bitbake -c patch phosphor-fan;bitbake -c compile phosphor-fan;bitbake obmc-phosphor-image
+
+  bitbake -c cleansstate virtual/kernel obmc-phosphor-image; bitbake -c patch  virtual/kernel;
+  ls -la; bitbake obmc-phosphor-image;  ls -la; cd  ./tmp/deploy/images/palmetto/;ls -la *.mtd;cd -;
+  export file=
+
+  ls;fw_setenv openbmconce copy-files-to-ram copy-base-filesystem-to-ram;fw_setenv openbmconce copy-files-to-ram copy-base-filesystem-to-ram ;pwd;
+  scp cyril@10.42.1.1:/home/cyril/work/p8/openbmc/2.1/openbmc/build/tmp/deploy/images/palmetto/$file  /run/initramfs/
+obmc-phosphor-image-palmetto-20180628080257.static.mtd
+
+  ls -ls; mv /run/initramfs/obmc-* /run/initramfs/image-bmc;sync;reboot;
+
+ scp cyril@10.42.1.1:/home/cyril/work/p8/openbmc/2.1/openbmc/build/tmp/work/armv5e-openbmc-linux-gnueabi/phosphor-fan/1.0-r1/build/control/phosphor-fan-control /run/initramfs/
+
+ cp -rf  ~/work/p8/phosphor-hwmon/1.0-r1/git/* ~/work/p8/openbmc/evt2/openbmc/build/tmp/work/armv5e-openbmc-linux-gnueabi/phosphor-hwmon/1.0-r1/git/
+ scp cyril@10.42.1.1:/home/cyril/work/p8/openbmc/2.1/openbmc/build/tmp/work/armv5e-openbmc-linux-gnueabi/phosphor-hwmon/1.0-r1/build/phosphor-hwmon-readd  /run/initramfs/
+ setenv ethaddr 70:E2:84:14:02:2C; vi ./systemd/network/00-bmc-eth0.network 
+ /etc/systemd/network/00-bmc-eth0.network...
+ fw_printenv
+ fw_setenv
+
+ cp ~/work/Palmetto.py /home/cyril/work/p8/openbmc/2.1/openbmc/build/tmp/work/all-openbmc-linux/palmetto-config/1.0-r1/configs/Palmetto.py 
+
+vin  ./tmp/work/palmetto-openbmc-linux-gnueabi/obmc-phosphor-image/1.0-r0/rootfs/usr/lib/python2.7/site-packages/obmc_system_config.py:98:GPIO_CONFIG
+bitbake -patch palmetto-config
+curl -b cjar -k https://$bmcip/xyz/openbmc_project/^C
+cyril@curl -c cjar -k -X POST -H "Content-Type: application/json" -d '{"data": [ "root","AEWIN-cyril:/etc/default$ curl -c cjar -k -X POST -H "Content-Type: application/json" -d '{"data": [ "root","aewin" ] }' https://$bmcip/login^C
+cyril@AEWIN-cyril:/etc/default$ export bmcip=10.42.0.131^C
+
+
+~--------------------------------------------------------------------------------------------------------------------------------
+  rsync -arv --exclude "build"  ../openbmc ./
+p
+scp cyril@10.42.1.1:/home/share/pwm-tacho-controller\@1e786000.conf ./
+
+find 單一个目录示例
+find ./  -path "./build"  -prune -o  -iname 0001-configs-ast-Add-redundnant-env.patch  -print
+find ../ -path "../build"  -prune -o  -iname 0001-configs-ast-Add-redundnant-env.patch  -print
+
+find 多个目录示例
+find ./  -path "./build"  -prune -o -path "./tmp" -prune -o -iname 0001-configs-ast-Add-redundnant-env.patch  -print
+
+grep 单个目录示例
+ --exclude-dir={.git,res,bin}
+grep -E "h单个单个目录示例
+grep -E "http"  ./ -R --exclude-dir=.git 
+多个目录示例
+grep -E "http"  . -R --exclude-dir={.git,res,bin}目录示例
+grep -E "http"  ./ -R --exclude-dir=.git 
+多个目录示例
+grep -E "http"  . -R --exclude-dir={.git,res,bin}ttp"  ./ -R --exclude-dir=.git 
+e单个目录示例
+grep -E "http"  ./ -R --exclude-dir=.git 
+多个目录示例
+grep -E "http"  . -R --exclude-dir={.git,res,bin} 个目录示例
+grep -E "http"  . -R --exclude-dir={.git,res,bin}目录示例
+grep -E "http"  ./ -R --exclude-dir=.git 
+多个目录示例
+grep -E "http"  . -R --exclude-dir={.git,res,bin}ttp"  ./ -R --exclude-dir=.git 
+多个目录示例
+grep -E "http"  . -R --exclude-dir={.git,res,bin}
+
+
+查询相关值的方法：
+首先要登陆bmc：             curl -c cjar -k -X POST -H "Content-Type: application/json" -d '{"data": [ "root","admin" ] }' https://bmcip/login
+然后可以查询温度：          curl -b cjar -k https://bmcip/xyz/openbmc_project/sensors/temperature/enumerate
+或者可以查询风扇转速：      curl -b cjar -k https://bmcip/xyz/openbmc_project/sensors/fan_tach/enumerate
+或者一次性查询所有sensors： curl -b cjar -k https://bmcip/xyz/openbmc_project/sensors/enumerate
+
+
+ 1956  bitbake virtual/kernel -c patch -f
+ 1957  vim ~/work/aspeed-bmc-opp-palmetto.dts
+ 1958  vim ~/work/aspeed-bmc-opp-palmetto.dts.test.EVT2.temp 
+ 1959  cp  ~/work/aspeed-bmc-opp-palmetto.dts.test.EVT2.temp  tmp/work-shared/palmetto/kernel-source/arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dts 
+ 1960  cp ~/work/aspeed.c  ./tmp/work-shared/palmetto/kernel-source/arch/arm/mach-aspeed/aspeed.c
+ 1961  cp ~/work/aspeed.c  ./tmp/work-shared/palmetto/kernel-source/arch/arm/mach-aspeed/aspeed.c 
+ 1962  cp ~/work/ftgmac100.c 
+ 1963  cp ~/work/ftgmac100.c  ./tmp/work-shared/palmetto/kernel-source/drivers/net/ethernet/faraday/ftgmac100.c
+ 1964  bitbake virtual/kernel -c compile -f
+ 1965  bitbake obmc-phosphor-image
+
+
+vim
+./tmp/work/palmetto-openbmc-linux-gnueabi/obmc-phosphor-image/1.0-r0/rootfs/usr/lib/python2.7/site-packages/obmc_system_config.py:98:GPIO_CONFIG
+
+/home/cyril/work/openbmc/p8/openbmc/meta-phosphor/common/recipes-kernel/linux/linux-obmc
+#include "aspeed-bmc-opp-flash-layout.dtsi" ??? 68
+
+
+gobal config setting
+
+
+ for((i=1;i<=433;i++));do echo $i  > /sys/class/gpio/export ;done 
+ ;cat /sys/kernel/debug/gpio
+
+
+ for((i=1;i<=433;i++));do echo $i  > /sys/class/gpio/export ;done 
+
+
+ echo "in" > /sys/class/gpio/gpio337/direction
+ echo "out" > /sys/class/gpio/gpio337/direction
+ echo 1  > /sys/class/gpio/gpio337/value
+cat /sys/kernel/debug/pinctrl/1e6e2000.syscon:pinctrl@1e6e2000/pinmux-pins
+ 
+ 
+ o-317 (                    |BMC_POWER_UP        ) out lo 
+
+#########      build 
+
+Rebuilds & Reconfiguration
+
+You can reconfigure your build by removing the build/conf dir:
+
+rm -rf build/conf
+
+
+bitbake fsl-image-qt5
+
+git clone https://github.com/openbmc/openbmc
+
+export TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-ibm/meta-palmetto/conf
+. openbmc-env
+bitbake obmc-phosphor-image
+
+
+
+
+
+
+
+ipmitool -P 0penBmc -H 192.168.1.8 -I lanplus mc info
+The default user account is nameless, so no need to mention the username.
+
+
+
+
+curl -c cjar -k -X POST -H "Content-Type: application/json" \-d '{"data": [ "root", "admin" ] }' https://192.168.99.16/login
+
+
+curl -b cjar -k https://10.42.0.120/xyz/openbmc_project/inventory/enumerate
+
+
+
+
+acky:
+一、不知道现在有没有安排风扇温度测试相关的测试计划？方便的话尽快进行吧。
+    从BMC角度看，YR主要简单信息如下：
+    主板上有3个温度传感器；12个风扇，前后贴在一块为一组，分为6组。
+二、下面的固件里含有smart fan control。正常开机情况下转速在4000转左右，是否正常运行？
+    查询相关值的方法：
+    首先要登陆bmc：curl -c cjar -k -X POST -H "Content-Type: application/json" -d '{"data": [ "root","admin" ] }' https://10.42.0.228/login
+    然后可以查询温度：curl -b cjar -k https://10.42.0.228/xyz/openbmc_project/sensors/temperature/enumerate
+    或者可以查询风扇转速：curl -b cjar -k https://10.42.0.228/xyz/openbmc_project/sensors/fan_tach/enumerate
+    或者一次性查询所有sensors：curl -b cjar -k https://10.42.0.228/xyz/openbmc_project/sensors/enumerate
+
+
+
+
+///////////////////   firmware update   ///////////////////   
+
+curl -b cjar -k -H "Content-Type: application/json" -X POST \
+    -d '{"data": ["192.168.99.61", "1220.mtd"]}' \
+    https://192.168.99.58/org/openbmc/control/flash/bmc/action/updateViaTftp
+
+
+curl -b cjar -k -H "Content-Type: application/json" -X POST  -d '{"data": []}' \
+https://192.168.99.58/org/openbmc/control/flash/bmc/action/GetUpdateProgress
+
+
+#########      REST API 
+
+
+curl -b cjar -k https://192.168.99.11/org/openbmc/inventory/enumerate
+
+curl -c cjar -k -X POST -H "Content-Type: application/json"  -d '{"data": [ "root", "0penBmc" ] }'  https://192.168.99.58/login
+
+
+curl -c cjar -b cjar -k -H "Content-Type: application/json" -X POST https://192.168.99.30/org/openbmc/control/chassis0/action/powerOn -d
+"{\"data\": [] }" 
+
+
+
+curl -c cjar -b cjar -k https://192.168.99.16//org/openbmc/inventory/system/chassis/motherboard/membuf
+
+
+
+• Power On the Server
+curl -c cjar -b cjar -k -H "Content-Type: application/json" -X POST https://192.168.99.125/org/openbmc/control/chassis0/action/powerOn -d "{\"data\": [] }" 
+
+
+-sensors  
+
+curl -b cjar -k https://192.168.99.31/xyz/openbmc_project/  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+}cyril@AEWIN-cyril:~$ curl -b cjar -k https://192.168.99.16/xyz/openbmc_project/sensors/
+{
+  "data": [
+    "/xyz/openbmc_project/sensors/power", 
+    "/xyz/openbmc_project/sensors/temperature"
+  ], 
+  "message": "200 OK", 
+  "status": "ok"
+}cyril@AEWIN-cyril:~$ curl -b cjar -k https://192.168.99.58/xyz/openbmc_project/sensors/power
+{
+  "data": {
+    "description": "org.freedesktop.DBus.Error.FileNotFound: path or object not found: /xyz/openbmc_project/sensors/power"
+  }, 
+  "message": "404 Not Found", 
+  "status": "error"
+}cyril@AEWIN-cyril:~$ curl -b cjar -k https://192.168.99.58/xyz/openbmc_project/sensors/power/
+{
+  "data": [
+    "/xyz/openbmc_project/sensors/power/pcie", 
+    "/xyz/openbmc_project/sensors/power/io", 
+    "/xyz/openbmc_project/sensors/power/cpu0", 
+    "/xyz/openbmc_project/sensors/power/centaur0"
+  ], 
+  "message": "200 OK", 
+  "status": "ok"
+}cyril@AEWIN-cyril:~$ curl -b cjar -k https://192.168.99.58/xyz/openbmc_project/sensors/power/cpu0
+{
+  "data": {
+    "Scale": -6, 
+    "Unit": "xyz.openbmc_project.Sensor.Value.Unit.Watts", 
+    "Value": 13000000
+  }, 
+  "message": "200 OK", 
+  "status": "ok"
+
+
+
+
+cyril@AEWIN-cyril:~$ curl -b cjar -k https://192.168.99.58/xyz/openbmc_project/sensors/temperature/
+{
+  "data": [
+    "/xyz/openbmc_project/sensors/temperature/ambient", 
+    "/xyz/openbmc_project/sensors/temperature/cpu", 
+    "/xyz/openbmc_project/sensors/temperature/rtc"
+  ], 
+  "message": "200 OK", 
+  "status": "ok"
+}cyril@AEWIN-cyril:~$ curl -b cjar -k https://192.168.99.30/xyz/openbmc_project/sensors/temperature/cpu
+{
+  "data": {
+    "Scale": -3, 
+    "Unit": "xyz.openbmc_project.Sensor.Value.Unit.DegreesC", 
+    "Value": 27375, 
+    "WarningAlarmHigh": 0, 
+    "WarningAlarmLow": 0, 
+    "WarningHigh": 80000, 
+    "WarningLow": 10000
+  }, 
+  "message": "200 OK", 
+  "status": "ok"
+
+cyril@AEWIN-cyril:~$ curl -b cjar -k https://192.168.99.30/xyz/openbmc_project/sensors/temperature/ambient
+{
+  "data": {
+    "Scale": -3, 
+    "Unit": "xyz.openbmc_project.Sensor.Value.Unit.DegreesC", 
+    "Value": 27813, 
+    "WarningAlarmHigh": 0, 
+    "WarningAlarmLow": 0, 
+    "WarningHigh": 40000, 
+    "WarningLow": 10000
+}
+
+
+cyril@AEWIN-cyril:~$ curl -c cjar -b cjar -k https://192.168.99.58/org/open_power/control/
+{
+  "data": [
+    "/org/open_power/control/host0", 
+    "/org/open_power/control/occ_3_0050"
+  ], 
+  "message": "200 OK", 
+  "status": "ok"
+
+
+• event
+ curl -c cjar -b cjar -k -H "Content-Type:application/json" -X GET https://192.168.99.126/org/openbmc/records/events/
+
+
+
+1048  bitbake obmc-phosphor-image
+ 1090  rm -rf bitbake.lock 
+ 1096  bitbake obmc-phosphor-image
+ 1123  rm -rf bitbake.lock 
+ 1131  bitbake obmc-phosphor-image
+ 1393  bitbake -c cleansstate
+ 1394  bitbake -c cleansstate linux-obmc
+ 1395  bitbake -c cleansstate obmc-flash-bmc
+ 1396  bitbake -c cleansstate obmc-mgr-sensor
+ 1397  bitbake -c cleansstate  obmc-mgr-system
+ 1398  bitbake -c cleansstate  palmetto-config
+ 1399  bitbake -c cleansstate   obmc-control-chassis
+ 1400  bitbake -c cleansstate  obmc-mgr-download
+ 1401  bitbake -c cleansstate obmc-pydevtools
+ 1402  bitbake -c cleansstate obmc-mgr-inventory
+ 1403  bitbake -c cleansstate  obmc-op-control-host
+ 1404  bitbake -c cleansstate   obmc-op-control-power
+ 1405  bitbake -c cleansstate  obmc-flash-bios
+ 1406  bitbake -c cleansstate   obmc-libobmc-intf
+ 1407  bitbake -c cleansstate    obmc-pcie-detect
+ 1408  bitbake -c cleansstate  obmc-button-power
+ 1409  bitbake -c cleansstate   obmc-op-flasher
+ 1410  bitbake -c cleansstate   obmc-control-bm
+ 1411  bitbake -c cleansstate  obmc-control-bmc
+ 1412  bitbake -c cleansstate linux-obmc
+ 1413  bitbake virtual/kernel -c patch -f
+ 1414  bitbake virtual/kernel
+ 1415  bitbake -c cleansstate linux-obmc
+ 1416  bitbake virtual/kernel -c patch -f
+ 1417  bitbake virtual/kernel
+ 1418  bitbake -c compile -f obmc-flash-bmc
+ 1427  bitbake -c cleansstate  obmc-button-power
+ 1428  bitbake -c compile -f  obmc-button-power
+ 1438  bitbake obmc-phosphor-image
+ 1475  bitbake -c compile -f obmc-flash-bmc
+ 1476  bitbake -c compile -f obmc-mgr-sensor
+ 1477  bitbake -c compile -f obmc-mgr-system
+ 1478  bitbake -c compile -f  palmetto-config
+ 1479  bitbake -c compile -f  obmc-control-chassis
+ 1480  bitbake -c compile -f   obmc-mgr-download
+ 1481  bitbake -c compile -f  obmc-pydevtools
+ 1482  bitbake -c compile -f   obmc-mgr-inventory
+ 1483  bitbake -c compile -f    obmc-op-control-host
+ 1484  bitbake -c compile -f       obmc-op-control-power
+ 1485  bitbake -c compile -f    obmc-flash-bios
+ 1486  bitbake -c compile -f  obmc-libobmc-intf
+ 1487  bitbake -c compile -f   obmc-pcie-detect
+ 1488  bitbake -c compile -f  
+ 1489  bitbake -c compile -f   obmc-button-power
+ 1490  bitbake -c compile -f  obmc-op-flasher
+ 1491  bitbake -c compile -f   obmc-control-bmc
+ 1493  bitbake obmc-phosphor-image
+ 1496  bitbake obmc-phosphor-image
+ 1498  bitbake -c compile -f   obmc-control-bmc
+ 1499  bitbake obmc-phosphor-image
+ 1516  bitbake -c compile -f palmetto-config
+ 1531  bitbake  
+ 1532  bitbake -c compile -f  site-packages
+ 1533  bitbake -c compile -f sysroots
+ 1534  bitbake -c compile -f  palmetto-config
+ 1535  bitbake obmc-phosphor-image
+ 1545  bitbake -c cleansstate  obmc-button-power
+ 1546  bitbake -c compile -f  obmc-button-power
+ 1555  bitbake -c compile -f  obmc-button-power
+ 1556  bitbake obmc-phosphor-image
+ 1567  bitbake obmc-phosphor-image
+ 1610  bitbake -c compile -f linux-obmc
+ 1611  bitbake virtual/kernel
+ 1639  bitbake virtual/kernel
+ 1640  bitbake obmc-phosphor-image
+ 1643  bitbake virtual/kernel
+ 1644  bitbake -c compile -f linux-obmc
+ 1645  bitbake virtual/kernel -c cleansstate
+ 1646  bitbake virtual/kernel -c patch -f
+ 1654  bitbake virtual/kernel -c compile -f
+ 1655  history |grep bitbake
+ 1656  bitbake obmc-phosphor-image
+ 1792  bitbake virtual/kernel -c patch -f
+ 2028  history |grep bitbake
+
+bitbake -c cleansstate obmc-control-fan phosphor-fan phosphor-fan-control-fan-config-native phosphor-fan-control-events-config-native phosphor-fan-control-zone-conditions-config-native phosphor-fan-control-zone-config-native phosphor-fan-monitor-config-native  phosphor-fan-presence-config-native  ipmitool openpower-ipmi-oem-sensor-inventory-mrw-native openpower-ipmi-oem-whitelist-native packagegroup-obmc-ipmid-providers palmetto-ipmi-inventory-map-native phosphor-ipmi-bt phosphor-ipmi-channel-inventory-native phosphor-ipmi-fru phosphor-ipmi-fru-merge-config-native phosphor-ipmi-fru-properties-native phosphor-ipmi-fru-read-bmc-inventory-native phosphor-ipmi-fru-read-inventory-example-native phosphor-ipmi-fru-whitelist-native phosphor-ipmi-host phosphor-ipmi-inventory-sel-native phosphor-ipmi-net phosphor-ipmi-sensor-config-native  phosphor-ipmi-sensor-inventory-mrw-config-native phosphor-ipmi-sensor-inventory-native openpower-fru-inventory-example-native openpower-fru-properties-example-native openpower-fru-vpd openpower-fru-vpd-layout-native phosphor-ipmi-fru phosphor-ipmi-fru-merge-config-native phosphor-ipmi-fru-properties-native phosphor-ipmi-fru-read-bmc-inventory-native phosphor-ipmi-fru-read-inventory-example-native phosphor-ipmi-fru-whitelist-native  dbus dbus-daemon-proxy nativesdk-dbus nativesdk-openpower-dbus-interfaces nativesdk-phosphor-dbus-interfaces nativesdk-sdbusplus openpower-dbus-interfaces openpower-dbus-interfaces-mapper-config-native openpower-dbus-interfaces-native phosphor-dbus-interfaces phosphor-dbus-interfaces-mapper-config-native phosphor-dbus-interfaces-native phosphor-dbus-monitor phosphor-dbus-monitor-config-native sdbusplus sdbusplus-native  obmc-phosphor-image phosphor-hwmon
+
+
+ 1948  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/logging/list
+ 1949  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/logging/list/
+ 1950  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/logging/list
+ 1951  curl -c cjar -b cjar -s -k -H 'Content-Type: application/json'; -d '{"data" : []}' -X GET https://192.168.99.18/xyz/openbmc_project/logging/enumerate
+ 1952  curl -c cjar -b cjar -s -k -H 'Content-Type: application/json'; -d '{"data" : []}' -X GET https://192.168.99.19/xyz/openbmc_project/logging/enumerate
+ 1953  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/logging/
+ 1958  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/inventory/system/
+ 1963  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/inventory/dydtem
+ 1964  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/inventory/system
+ 1965  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/inventory/system/
+ 1967  curl -c cjar -b cjar -k https://192.168.99.18/org/
+ 1968  curl -c cjar -b cjar -k https://192.168.99.18/org/openbmc/
+ 1969  curl -c cjar -b cjar -k https://192.168.99.18/org/openbmc/inventory/
+ 1974  curl -c cjar -b cjar -k https://192.168.99.18/org/openbmc/inventory/system/chassis/motherboard/
+ 1979  curl -c cjar -b cjar -k https://192.168.99.18/org/openbmc/sensors/host/
+ 1981  curl -c cjar -b cjar -k https://192.168.99.18/org/openbmc/managers/
+ 1982  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/inventory/system/
+ 1983  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/inventory/
+ 1985  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/logging/
+ 1993  curl -c cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/logging/entry/
+
+
+cjar -b cjar -k https://192.168.99.18/xyz/openbmc_project/
+busctl introspect  xyz.openbmc_project.Network /xyz/openbmc_project/network/config/dhcp  
+busctl introspect xyz.openbmc_project.Hwmon-2029964953.Hwmon1 /xyz/openbmc_project/sensors/temperature/boardTemp1 
+busctl introspect xyz.openbmc_project.Logging /xyz/openbmc_project/logging/internal/manager
+busctl get-property xyz.openbmc_project.State.Host /xyz/openbmc_project/state/host0 xyz.openbmc_project.State.Host RequestedHostTransition
+busctl get-property xyz.openbmc_project.Hwmon-2029964953.Hwmon1 /xyz/openbmc_project/sensors/temperature/boardTemp1  xyz.openbmc_project.Sensor.Value Value
+busctl get-property xyz.openbmc_project.Hwmon-69580376.Hwmon1 /xyz/openbmc_project/sensors/temperature/boardTemp0  xyz.openbmc_project.Sensor.Value Value
+
+
+
+
+
+
+
+
+
+curl -c cjar -b cjar -k -H "Content-Type: application/json" -X PUT https://$bmcip/xyz/openbmc_project/sensors/fan_tach/fan0/attr/Target -d {data : 10}
+curl -c cjar -b cjar -k -H "Content-Type: application/json" -X PUT https://$bmcip/xyz/openbmc_project/sensors/fan_tach/fan3/attr/Target -d '{"data" : 8300}'
+
+cyril@AEWIN-cyril:~/work/p8/openbmc/2.1/openbmc/build$ curl -c cjar -b cjar -k -H "Content-Type: application/json" -X PUT https://$bmcip/xyz/openbmc_project/sensors/fan_tach/fan0/attr/Target -d '{"data" : 8}'
+
+
+
+
+
+busctl call xyz.openbmc_project.ObjectMapper /xyz/openbmc_project/object_mapper xyz.openbmc_project.ObjectMapper GetSubTreePaths sias /xyz/openbmc_project/inventory/system/chassis/ 0 1 xyz.openbmc_project.Inventory.Item
+
+
+busctl call xyz.openbmc_project.ObjectMapper /xyz/openbmc_project/object_mapper xyz.openbmc_project.ObjectMapper GetObject sas "/xyz/openbmc_project/network/eth0" 1 "xyz.openbmc_project.Network.EthernetInterface"   
+`:wq
+journalctl --no-pager MESSAGE='Error in mapper response for getting service name' -o verbose
+
+
+
+
+962  find ./ -iname releases
+ 1963  ls
+ 1964  cd serverwiz-1.18
+ 1965  ls
+ 1966  cp serverwiz2_lib.zip ../
+ 1967  cd ..
+ 1968  cd ~/work/p8/serverwize/
+ 1969  ls
+ 1970  java -jar serverwiz2.jar
+ 1971  cd -
+ 1972  ls
+ 1973  java -jar serverwiz2.jar
+ 1974  ls
+ 1975  java -jar serverwiz2.jar
+ 1976  cd -
+ 1977  java -jar serverwiz2.jar
+ 1978  cd common-mrw-xml/
+ 1979  git branch -a
+ 1980  cd ..
+ 1981  java -jar serverwiz2.jar -v v1.16
+ 1982  ls
+ 1983  rm -rf *
+ 1984  wget https://github.com/open-power/serverwiz/releases/download/v1.16/serverwiz2.jar
+ 1985  java -jar serverwiz2.jar -v v1.16
+ 1986  java -jar serverwiz2.jar -v v1.18
+ 1987  cd ~/work/
+ 1988  cd ..
+
+
+List available dumps
+curl -c cjar -b cjar -k https://<BMC_IP>/xyz/openbmc_project/dump/list
+Manually trigger a generation of a dump
+curl -c cjar -b cjar -k -H "Content-Type: application/json" -d "{\"data\": []}" \
+-X POST  https://<BMC_IP>/xyz/openbmc_project/dump/action/CreateDump
+Download the dump
+curl -O -J -c cjar -b cjar -k -X GET https://<BMC_IP>/download/dump/<ID>
+Clear the dumps from the BMC
+Single
+curl -c cjar -b cjar -k -H "Content-Type: application/json" -d "{\"data\": []}" \
+-X POST  https://<BMC_IP>/xyz/openbmc_project/dump/entry/<ID>/action/Delete
+All
+curl -c cjar -b cjar -k -H "Content-Type: application/json" -d "{\"data\": []}" \
+-X POST  https://<BMC_IP>/xyz/openbmc_project/dump/action/DeleteAll
+
+
+####################################################################################################
+Linux里设置环境变量的方法（export PATH） export LD_LIBRARY_PATH=<lib_path>:$LD_LIBRARY_PATH
+
+在Linux里设置环境变量的方法（export PATH）
+一般来说，配置交叉编译工具链的时候需要指定编译工具的路径，此时就需要设置环境变量。例如我的mips-linux-gcc编译器在“/opt/au1200_rm/build_tools/bin”目录下，build_tools就是我的编译工具，则有如下三种方法来设置环境变量：
+
+1、直接用export命令：
+#export PATH=$PATH:/opt/au1200_rm/build_tools/bin
+查看是否已经设好，可用命令export查看：
+
+2、修改profile文件： 
+#vi /etc/profile 
+在里面加入:
+export PATH="$PATH:/opt/au1200_rm/build_tools/bin"
+
+3. 修改.bashrc文件：
+# vi /root/.bashrc
+在里面加入：
+export PATH="$PATH:/opt/au1200_rm/build_tools/bin"
+
+后两种方法一般需要重新注销系统才能生效，最后可以通过echo命令测试一下：
+# echo $PATH
+看看输出里面是不是已经有了/my_new_path这个路径了。
+-----------------------------------------------------------------------------------------------------------------------
+
+　“/bin”、“/sbin”、“/usr/bin”、“/usr/sbin”、“/usr/local/bin”等路径已经在系统环境变量中了，如果可执行文件在这几个标准位置，在终端命令行输入该软件可执行文件的文件名和参数(如果需要参数)，回车即可。
+
+　　如果不在标准位置，文件名前面需要加上完整的路径。不过每次都这样跑就太麻烦了，一个“一劳永逸”的办法是把这个路径加入环境变量。命令 “PATH=$PATH:路径”可以把这个路径加入环境变量，但是退出这个命令行就失效了。要想永久生效，需要把这行添加到环境变量文件里。有两个文件可 选：“/etc/profile”和用户主目录下的“.bash_profile”，“/etc/profile”对系统里所有用户都有效，用户主目录下 的“.bash_profile”只对这个用户有效。
+
+　　“PATH=$PATH:路径1:路径2:...:路径n”，意思是可执行文件的路径包括原先设定的路径，也包括从“路径1”到“路径n”的所 有路径。当用户输入一个一串字符并按回车后，shell会依次在这些路径里找对应的可执行文件并交给系统核心执行。那个“$PATH”表示原先设定的路径 仍然有效，注意不要漏掉。某些软件可能还有“PATH”以外类型的环境变量需要添加，但方法与此相同，并且也需要注意“$”。
+
+　　注意，与DOS/Window不同，UNIX类系统环境变量中路径名用冒号分隔，不是分号。另外，软件越装越多，环境变量越添越多，为了避免造成混乱，建议所有语句都添加在文件结尾，按软件的安装顺序添加。
+
+　　格式如下()：
+
+　　# 软件名-版本号
+
+　　PATH=$PATH:路径1:路径2:...:路径n
+
+　　其他环境变量=$其他环境变量:...
+
+　　在“profile”和“.bash_profile”中，“#”是注释符号，写在这里除了视觉分隔外没有任何效果。
+
+　　设置完毕，注销并重新登录，设置就生效了。如果不注销，直接在shell里执行这些语句，也能生效，但是作用范围只限于执行了这些语句的shell。
+
+　　相关的环境变量生效后，就不必老跑到软件的可执行文件目录里去操作了。
